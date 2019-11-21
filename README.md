@@ -19,4 +19,4 @@ samples, guidance on mobile development, and a full API reference.
 
 ICON APP : https://medium.com/@psyanite/how-to-add-app-launcher-icons-in-flutter-bd92b0e0873a
 
-CscollView Textfield : https://stackoverflow.com/questions/54176233/textfield-gets-hidden-when-the-keyboard-pops-in
+ScrollView Textfield : https://stackoverflow.com/questions/54176233/textfield-gets-hidden-when-the-keyboard-pops-in
