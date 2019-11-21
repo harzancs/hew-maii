@@ -1,4 +1,4 @@
-# hew_maii
+# MOBILE APPLICATION "หิวมั๊ย" 
 
 A new Flutter project.
 
