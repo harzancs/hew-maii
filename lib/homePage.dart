@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'font_style.dart';
 import 'sign/sign_in.dart';
+import 'sign/sign_up.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -48,74 +49,95 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 180),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  ButtonTheme(
-                    minWidth: 300.0,
-                    child: RaisedButton(
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(9.0),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignIn()),
-                        );
-                      },
-                      padding: EdgeInsets.all(8.0),
-                      color: Color.fromRGBO(250, 250, 250, 50),
-                      child: Text(
-                        "ลงชื่อเข้าใช้งาน",
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontFamily: FontStyles().fontFamily,
-                            fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                  ),
-                  Padding(
+            Expanded(
+              child: Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        ButtonTheme(
+                          minWidth: 300.0,
+                          child: RaisedButton(
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(9.0),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignIn()),
+                              );
+                            },
+                            padding: EdgeInsets.all(8.0),
+                            color: Color.fromRGBO(250, 250, 250, 50),
+                            child: Text(
+                              "ลงชื่อเข้าใช้งาน",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontFamily: FontStyles().fontFamily,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                          ),
+                        ),
+                         Padding(
                     padding: EdgeInsets.all(2),
                   ),
-                  ButtonTheme(
-                    minWidth: 300.0,
-                    child: RaisedButton(
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(9.0),
-                      ),
-                      onPressed: () {},
-                      padding: EdgeInsets.all(8.0),
-                      color: Color.fromRGBO(250, 250, 250, 150),
-                      child: Text(
-                        "ลงทะเบียน",
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            fontFamily: FontStyles().fontFamily,
-                            fontWeight: FontWeight.normal),
-                      ),
+                        ButtonTheme(
+                          minWidth: 300.0,
+                          child: RaisedButton(
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(9.0),
+                            ),
+                            onPressed: () {Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignUp()),
+                              );},
+                            padding: EdgeInsets.all(8.0),
+                            color: Color.fromRGBO(250, 250, 250, 150),
+                            child: Text(
+                              "ลงทะเบียน",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                  fontFamily: FontStyles().fontFamily,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                        ),
+                        Text(
+                          "Version 1.0",
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontFamily: FontStyles().fontFamily,
+                              fontWeight: FontWeight.normal),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(5),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
+                  )),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 50.0),
-              child: Column(
-                children: <Widget>[
-                  Text("Version 1.0",
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white,
-                          fontFamily: FontStyles().fontFamily,
-                          fontWeight: FontWeight.normal))
-                ],
-              ),
-            )
+            // Container(
+            //   margin: EdgeInsets.only(top: 50.0),
+            //   child: Column(
+            //     children: <Widget>[
+            //       Text("Version 1.0",
+            //           style: TextStyle(
+            //               fontSize: 14,
+            //               color: Colors.white,
+            //               fontFamily: FontStyles().fontFamily,
+            //               fontWeight: FontWeight.normal))
+            //     ],
+            //   ),
+            // )
           ],
         ),
       ),
