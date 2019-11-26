@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hew_maii/model/font_style.dart';
 import 'package:hew_maii/sign/sign_up_next.dart';
-
-import '../font_style.dart';
 
 class SignUp extends StatefulWidget {
   @override

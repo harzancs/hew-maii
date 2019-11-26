@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
-
-import '../font_style.dart';
+import 'package:hew_maii/model/font_style.dart';
+import 'package:hew_maii/page/mainpage_list.dart';
 
 class SignIn extends StatefulWidget {
   @override
   _SignInState createState() => _SignInState();
 }
 
+class DataLogin {
+  final String username, password;
+  const DataLogin({this.username, this.password});
+}
+
 class _SignInState extends State<SignIn> {
+  final _formKey = GlobalKey<FormState>();
   // Control Value in TextField
-  TextEditingController username = new TextEditingController();
-  TextEditingController password = new TextEditingController();
+  TextEditingController controlUsername = new TextEditingController();
+  TextEditingController controlPassword = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -70,98 +76,115 @@ class _SignInState extends State<SignIn> {
                       padding:
                           EdgeInsets.only(top: 180.0, left: 20.0, right: 20.0),
                       child: SingleChildScrollView(
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(
-                              height: 50,
-                              child: TextField(
-                                controller: username,
-                                autofocus: false,
-                                style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontFamily: FontStyles().fontFamily,
-                                    color: Color(0xFFFFFFFF)),
-                                decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white.withOpacity(0.3),
-                                    focusedBorder: OutlineInputBorder(
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: <Widget>[
+                              SizedBox(
+                                height: 50,
+                                child: TextField(
+                                  controller: controlUsername,
+                                  autofocus: false,
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontFamily: FontStyles().fontFamily,
+                                      color: Color(0xFFFFFFFF)),
+                                  decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white.withOpacity(0.3),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.white
+                                                  .withOpacity(0.5)),
+                                          borderRadius:
+                                              BorderRadius.circular(9.0)),
+                                      enabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
-                                            color:
-                                                Colors.white.withOpacity(0.5)),
+                                            color: Colors.white.withOpacity(0)),
                                         borderRadius:
-                                            BorderRadius.circular(9.0)),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.white.withOpacity(0)),
-                                      borderRadius: BorderRadius.circular(9.0),
-                                    ),
-                                    hintText: 'Username',
-                                    hintStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: FontStyles().fontFamily)),
-                              ),
-                            ),
-                            SizedBox(height: 10.0),
-                            SizedBox(
-                              height: 50,
-                              child: TextField(
-                                controller: password,
-                                obscureText: true,
-                                autofocus: false,
-                                style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontFamily: FontStyles().fontFamily,
-                                    color: Color(0xFFFFFFFF)),
-                                decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white.withOpacity(0.3),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color:
-                                                Colors.white.withOpacity(0.5)),
-                                        borderRadius:
-                                            BorderRadius.circular(9.0)),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.white.withOpacity(0)),
-                                      borderRadius: BorderRadius.circular(9.0),
-                                    ),
-                                    hintText: 'Password',
-                                    hintStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: FontStyles().fontFamily)),
-                              ),
-                            ),
-                            SizedBox(height: 5.0),
-                            ButtonBar(
-                              alignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                FlatButton(
-                              onPressed: () {},
-                              child: Text(
-                                'ลืมรหัสผ่าน',
-                                style: TextStyle(
-                                  fontFamily: FontStyles().fontFamily,
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.white,
+                                            BorderRadius.circular(9.0),
+                                      ),
+                                      hintText: 'Username',
+                                      hintStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: FontStyles().fontFamily)),
                                 ),
-                              )),
-                                RaisedButton(
-                                  onPressed: () {
-                                    
-                                  },
-                                  color: Colors.green,
-                                  child: Text(
-                                    'เข้าสู่ระบบ',
-                                    style: TextStyle(
-                                        fontFamily: FontStyles().fontFamily,
-                                        fontSize: 15.0),
-                                  ),
-                                  textColor: Colors.white,
-                                )
-                              ],
-                            )
-                          ],
+                              ),
+                              SizedBox(height: 10.0),
+                              SizedBox(
+                                height: 50,
+                                child: TextField(
+                                  controller: controlPassword,
+                                  obscureText: true,
+                                  autofocus: false,
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontFamily: FontStyles().fontFamily,
+                                      color: Color(0xFFFFFFFF)),
+                                  decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white.withOpacity(0.3),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.white
+                                                  .withOpacity(0.5)),
+                                          borderRadius:
+                                              BorderRadius.circular(9.0)),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.white.withOpacity(0)),
+                                        borderRadius:
+                                            BorderRadius.circular(9.0),
+                                      ),
+                                      hintText: 'Password',
+                                      hintStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: FontStyles().fontFamily)),
+                                ),
+                              ),
+                              SizedBox(height: 5.0),
+                              ButtonBar(
+                                alignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  FlatButton(
+                                      onPressed: () {},
+                                      child: Text(
+                                        'ลืมรหัสผ่าน',
+                                        style: TextStyle(
+                                          fontFamily: FontStyles().fontFamily,
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.white,
+                                        ),
+                                      )),
+                                  RaisedButton(
+                                    onPressed: () {
+                                      if (_formKey.currentState.validate()) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => MainPageList(
+                                              value: DataLogin(
+                                                  username: controlUsername.text,
+                                                  password:
+                                                      controlPassword.text),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    color: Colors.green,
+                                    child: Text(
+                                      'เข้าสู่ระบบ',
+                                      style: TextStyle(
+                                          fontFamily: FontStyles().fontFamily,
+                                          fontSize: 15.0),
+                                    ),
+                                    textColor: Colors.white,
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),

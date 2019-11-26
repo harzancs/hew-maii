@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hew_maii/model/font_style.dart';
 import 'package:hew_maii/sign/sign_up.dart';
 
-import '../font_style.dart';
 
 class SignUpNext extends StatefulWidget {
   final DataText value;
@@ -124,7 +124,7 @@ class _SignUpNextState extends State<SignUpNext> {
                                         borderRadius:
                                             BorderRadius.circular(9.0),
                                       ),
-                                      hintText: 'Username',
+                                      hintText: 'Username 6 ตัวขึ้นไป',
                                       hintStyle: TextStyle(
                                           color: Colors.white,
                                           fontFamily: FontStyles().fontFamily)),
@@ -197,7 +197,7 @@ class _SignUpNextState extends State<SignUpNext> {
                                         borderRadius:
                                             BorderRadius.circular(9.0),
                                       ),
-                                      hintText: 'Re-Password',
+                                      hintText: 'Password อีกครั้ง',
                                       hintStyle: TextStyle(
                                           color: Colors.white,
                                           fontFamily: FontStyles().fontFamily)),

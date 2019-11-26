@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'font_style.dart';
+import 'package:hew_maii/model/font_style.dart';
 import 'sign/sign_in.dart';
 import 'sign/sign_up.dart';
 
