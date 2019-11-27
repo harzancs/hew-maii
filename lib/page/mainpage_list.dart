@@ -30,7 +30,6 @@ class _MainPageListState extends State<MainPageList> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       body: Container(
@@ -52,7 +51,11 @@ class _MainPageListState extends State<MainPageList> {
                 style: TextStyle(fontFamily: FontStyles().fontFamily),
               )),
           BottomNavigationBarItem(
-              icon: Icon(Icons.add_a_photo), title: Text('New Beer')),
+              icon: Icon(Icons.add_a_photo),
+              title: Text(
+                'New Beer',
+                style: TextStyle(fontFamily: FontStyles().fontFamily),
+              )),
           BottomNavigationBarItem(
               icon: Icon(Icons.person),
               title: Text(

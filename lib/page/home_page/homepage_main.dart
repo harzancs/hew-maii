@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hew_maii/model/font_style.dart';
 
 class ListHomePage extends StatelessWidget {
   @override
@@ -12,19 +13,39 @@ class ListHomePage extends StatelessWidget {
           ),
           Container(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                SizedBox(
-                  height: 10,
+                Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(9),
+                    ),
+                    Text(
+                      "หิวมั๊ย",
+                      style: TextStyle(
+                          fontFamily: FontStyles().fontFamily,
+                          fontSize: 28,
+                          color: Colors.white),
+                    ),
+                  ],
                 ),
-                IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                    size: 50,
-                  ),
+                Row(
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(
+                        Icons.search,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {},
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.notifications,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {},
+                    ),
+                  ],
                 )
               ],
             ),
@@ -35,12 +56,8 @@ class ListHomePage extends StatelessWidget {
           SingleChildScrollView(
               child: Column(
             children: <Widget>[
-              Card(
-                child: Column(
-                  children: <Widget>[Text("data")],
-                ),
-              ),
-              
+              Icon(Icons.place),
+              Text("กรุณาระบุ\nตำแหน่งที่อยู่ของคุณ")
             ],
           )),
         ],
