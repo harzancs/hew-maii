@@ -87,7 +87,10 @@ class _LoaderPageState extends State<LoaderPage> {
         fit: StackFit.expand,
         children: <Widget>[
           Container(
-            decoration: BoxDecoration(color: Colors.white),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/bg/bg_3.jpg'), fit: BoxFit.cover),
+            ),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,

@@ -25,7 +25,7 @@ class _MainPageListState extends State<MainPageList> {
   int selectedIndex = 0;
   final widgetOptions = [
     ListFoodPage(),
-    LisDriverPage(),
+    ListDriverPage(),
     Text('Favourites'),
   ];
 

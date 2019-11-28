@@ -1,69 +1,104 @@
 import 'package:flutter/material.dart';
 import 'package:hew_maii/model/font_style.dart';
 
-class LisDriverPage extends StatelessWidget {
-  bool isSwitched = true;
+class ListDriverPage extends StatefulWidget {
+  @override
+  _ListDriverPageState createState() => _ListDriverPageState();
+}
 
-  Widget _statusWorking(bool isSwitched) {
-    if (isSwitched) {
-      return Text("ใช้งาน");
-    } else if(!isSwitched) {
-      return Text("หยุด");
+class _ListDriverPageState extends State<ListDriverPage> {
+  bool _switchOn = false;
+
+  TextStyle textStyleStatus = TextStyle(
+      fontFamily: FontStyles().fontFamily, fontSize: 18, color: Colors.white);
+
+  Widget _widgetStatus(bool _switchOn) {
+    if (_switchOn) {
+      return Text("ใช้งาน", style: textStyleStatus);
+    } else {
+      return Text("หยุด", style: textStyleStatus);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Container(
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(15),
-          ),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
+    return Scaffold(
+      body: Container(
+        height: 1000,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/bg/bg_2.jpg'), fit: BoxFit.cover),
+        ),
+        child: Center(
+            child: Container(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(15),
+              ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(9),
+                    Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(9),
+                        ),
+                        Text(
+                          "ส่งอาหาร",
+                          style: TextStyle(
+                              fontFamily: FontStyles().fontFamily,
+                              fontSize: 28,
+                              color: Colors.white),
+                        ),
+                      ],
                     ),
-                    Text(
-                      "ส่งอาหาร",
-                      style: TextStyle(
-                          fontFamily: FontStyles().fontFamily,
-                          fontSize: 28,
-                          color: Colors.white),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    _statusWorking(isSwitched),
-                    Switch(
-                      value: isSwitched,
-                      onChanged: (val) {},
-                      activeTrackColor: Colors.lightGreenAccent,
-                      activeColor: Colors.green,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(5),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          width: 115,
+                          height: 35,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15.0),
+                              color: Colors.white.withOpacity(0.2)),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              _widgetStatus(_switchOn),
+                              Switch(
+                                value: _switchOn,
+                                onChanged: (bool val) {
+                                  setState(() {
+                                    _switchOn = val;
+                                    print(_switchOn);
+                                  });
+                                },
+                                activeTrackColor: Colors.green,
+                                activeColor: Colors.white,
+                              )
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(5),
+                        )
+                      ],
                     )
                   ],
-                )
-              ],
-            ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(50),
+              ),
+              SingleChildScrollView(
+                child: Center(),
+              )
+            ],
           ),
-          Padding(
-            padding: EdgeInsets.all(50),
-          ),
-          SingleChildScrollView(
-            child: Center(),
-          )
-        ],
+        )),
       ),
-    ));
+    );
   }
 }

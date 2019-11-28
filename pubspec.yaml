@@ -50,6 +50,7 @@ flutter:
   assets:
     - assets/bg/bg_1.jpg
     - assets/bg/bg_2.jpg
+    - assets/bg/bg_3.jpg
     #  - images/a_dot_ham.jpeg
     # icon
     - assets/ico/restaurant_white.png
