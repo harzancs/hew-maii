@@ -45,15 +45,15 @@ class _MainPageListState extends State<MainPageList> {
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(Icons.dashboard),
+              icon: Icon(Icons.restaurant),
               title: Text(
-                'หน้าแรก',
+                'สั่งอาหาร',
                 style: TextStyle(fontFamily: FontStyles().fontFamily),
               )),
           BottomNavigationBarItem(
-              icon: Icon(Icons.add_a_photo),
+              icon: Icon(Icons.motorcycle),
               title: Text(
-                'New Beer',
+                'ขับรถ',
                 style: TextStyle(fontFamily: FontStyles().fontFamily),
               )),
           BottomNavigationBarItem(

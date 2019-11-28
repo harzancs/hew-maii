@@ -51,15 +51,37 @@ class ListHomePage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(50),
           ),
           SingleChildScrollView(
-              child: Column(
-            children: <Widget>[
-              Icon(Icons.place),
-              Text("กรุณาระบุ\nตำแหน่งที่อยู่ของคุณ")
-            ],
-          )),
+            child: Center(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Icon(
+                  Icons.place,
+                  color: Colors.white,
+                  size: 80,
+                ),
+                Text(
+                  "กรุณาระบุ",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontFamily: FontStyles().fontFamily),
+                ),
+                Text(
+                  "ตำแหน่งที่อยู่ของคุณ",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontFamily: FontStyles().fontFamily),
+                )
+              ],
+            )),
+          )
         ],
       ),
     ));
