@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hew_maii/model/font_style.dart';
+import 'package:hew_maii/page/food/insert_location.dart';
 
-class ListHomePage extends StatelessWidget {
+class ListFoodPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -30,21 +31,25 @@ class ListHomePage extends StatelessWidget {
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    IconButton(
-                      icon: Icon(
+                    SizedBox(
+                      width: 33,
+                      child: Icon(
                         Icons.search,
                         color: Colors.white,
                       ),
-                      onPressed: () {},
                     ),
-                    IconButton(
-                      icon: Icon(
+                    SizedBox(
+                      child: Icon(
                         Icons.notifications,
                         color: Colors.white,
                       ),
-                      onPressed: () {},
                     ),
+                    Padding(
+                      padding: EdgeInsets.all(5),
+                    )
                   ],
                 )
               ],
@@ -55,32 +60,8 @@ class ListHomePage extends StatelessWidget {
           ),
           SingleChildScrollView(
             child: Center(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Icon(
-                  Icons.place,
-                  color: Colors.white,
-                  size: 80,
-                ),
-                Text(
-                  "กรุณาระบุ",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontFamily: FontStyles().fontFamily),
-                ),
-                Text(
-                  "ตำแหน่งที่อยู่ของคุณ",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontFamily: FontStyles().fontFamily),
-                )
-              ],
-            )),
+              child: insertLocation(),
+            ),
           )
         ],
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hew_maii/model/font_style.dart';
-import 'package:hew_maii/page/home_page/homepage_main.dart';
+import 'package:hew_maii/page/driver/driver_main.dart';
+import 'package:hew_maii/page/food/food_main.dart';
 import 'package:hew_maii/sign/sign_in.dart';
 
 class MainPageList extends StatefulWidget {
@@ -23,8 +24,8 @@ class _MainPageListState extends State<MainPageList> {
 
   int selectedIndex = 0;
   final widgetOptions = [
-    ListHomePage(),
-    Text('Add new beer'),
+    ListFoodPage(),
+    LisDriverPage(),
     Text('Favourites'),
   ];
 
