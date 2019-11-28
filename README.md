@@ -24,3 +24,5 @@ ScrollView Textfield : https://stackoverflow.com/questions/54176233/textfield-ge
 Stepper : https://api.flutter.dev/flutter/material/Stepper-class.html
 
 ExpansionPanel : https://api.flutter.dev/flutter/material/ExpansionPanel-class.html
+
+Toast : https://medium.com/flutter-community/easy-toasts-notifications-in-flutter-with-oktoast-2baf009b6fbe
