@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hew_maii/model/font_style.dart';
+import 'package:hew_maii/page/driver/driver_order.dart';
 
 class ListDriverPage extends StatefulWidget {
   @override
@@ -11,12 +12,36 @@ class _ListDriverPageState extends State<ListDriverPage> {
 
   TextStyle textStyleStatus = TextStyle(
       fontFamily: FontStyles().fontFamily, fontSize: 16, color: Colors.white);
+  TextStyle textStyleOnOff = TextStyle(
+      fontFamily: FontStyles().fontFamily, fontSize: 30, color: Colors.white);
 
   Widget _widgetStatus(bool _switchOn) {
     if (_switchOn) {
       return Text("ใช้งาน", style: textStyleStatus);
     } else {
       return Text("หยุด", style: textStyleStatus);
+    }
+  }
+
+  Widget _widgetOnOff(bool _switchOn) {
+    if (!_switchOn) {
+      return Container(
+        child: Column(
+          children: <Widget>[
+            Icon(
+              Icons.layers_clear,
+              color: Colors.white,
+              size: 80,
+            ),
+            Text(
+              "ปิดรับงาน",
+              style: textStyleOnOff,
+            )
+          ],
+        ),
+      );
+    } else {
+      return ListOrder();
     }
   }
 
@@ -89,11 +114,17 @@ class _ListDriverPageState extends State<ListDriverPage> {
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(50),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.all(50),
+              // ),
               SingleChildScrollView(
-                child: Center(),
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      _widgetOnOff(_switchOn),
+                    ],
+                  ),
+                ),
               )
             ],
           ),
