@@ -10,7 +10,7 @@ class _ListDriverPageState extends State<ListDriverPage> {
   bool _switchOn = false;
 
   TextStyle textStyleStatus = TextStyle(
-      fontFamily: FontStyles().fontFamily, fontSize: 18, color: Colors.white);
+      fontFamily: FontStyles().fontFamily, fontSize: 16, color: Colors.white);
 
   Widget _widgetStatus(bool _switchOn) {
     if (_switchOn) {
