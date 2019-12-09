@@ -1,7 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hew_maii/model/font_style.dart';
+import 'package:hew_maii/page/main_list.dart';
+import 'package:hew_maii/server/server.dart';
+import 'package:hew_maii/sign/sign_in.dart';
 import 'package:hew_maii/sign/sign_up.dart';
 
+import 'package:http/http.dart' as http;
 
 class SignUpNext extends StatefulWidget {
   final DataText value;
@@ -16,6 +23,51 @@ class _SignUpNextState extends State<SignUpNext> {
   TextEditingController controlUsername = new TextEditingController();
   TextEditingController controlPassword = new TextEditingController();
   TextEditingController controlRepassword = new TextEditingController();
+
+  // Future<List> login() async {
+  //   // print(response.body);
+  //   final response = await http.post(Server().AddressLogin, body: {
+  //     "username": controlUsername.text,
+  //     "password": controlPassword.text
+  //   });
+  //   var datauser = json.decode(response.body);
+  //   print(response.body);
+  //   if (datauser.length == 0) {
+  //     setState(() {
+  //       Fluttertoast.showToast(
+  //         msg: "ไม่พบข้อมูล",
+  //         toastLength: Toast.LENGTH_SHORT,
+  //         gravity: ToastGravity.BOTTOM,
+  //         backgroundColor: Colors.white,
+  //         textColor: Colors.orange,
+  //         fontSize: 16.0,
+  //       );
+  //     });
+  //   } else {
+  //     setState(() {
+  //       Fluttertoast.showToast(
+  //         msg: "สวัสดี คุณ${datauser[0]['cus_name']} !!!",
+  //         toastLength: Toast.LENGTH_SHORT,
+  //         gravity: ToastGravity.BOTTOM,
+  //         backgroundColor: Colors.white,
+  //         textColor: Colors.orange,
+  //         fontSize: 16.0,
+  //       );
+  //     });
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => MainPageList(
+  //           value: DataLogin(
+  //               username: controlUsername.text, password: controlPassword.text),
+  //         ),
+  //       ),
+  //     );
+  //   }
+  //   return datauser;
+  // }
+
+  bool _isLoading = false;
 
   String pass;
 
@@ -205,23 +257,43 @@ class _SignUpNextState extends State<SignUpNext> {
                               ),
                               SizedBox(height: 10.0),
                               ButtonBar(
-                                alignment: MainAxisAlignment.end,
-                                children: <Widget>[
-                                  FloatingActionButton(
-                                    shape: RoundedRectangleBorder(
-                                        side: BorderSide(color: Colors.white),
-                                        borderRadius:
-                                            BorderRadius.circular(30)),
-                                    backgroundColor:
-                                        Colors.white.withOpacity(0.1),
-                                    elevation: 0,
-                                    onPressed: () {
-                                      if (_formKey.currentState.validate()) {}
-                                    },
-                                    child: Icon(Icons.keyboard_arrow_right),
-                                  )
-                                ],
-                              )
+                                  alignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    RaisedButton(
+                                      onPressed: () {
+                                        if (_formKey.currentState.validate()) {}
+                                      },
+                                      color: Colors.green,
+                                      child: Text(
+                                        _isLoading
+                                            ? 'กำลังลงทะเบียน..'
+                                            : 'ลงทะเบียน',
+                                        style: TextStyle(
+                                            fontFamily: FontStyles().fontFamily,
+                                            fontSize: 15.0),
+                                      ),
+                                      textColor: Colors.white,
+                                    ),
+                                  ])
+
+                              // ButtonBar(
+                              //   alignment: MainAxisAlignment.end,
+                              //   children: <Widget>[
+                              //     FloatingActionButton(
+                              //       shape: RoundedRectangleBorder(
+                              //           side: BorderSide(color: Colors.white),
+                              //           borderRadius:
+                              //               BorderRadius.circular(30)),
+                              //       backgroundColor:
+                              //           Colors.white.withOpacity(0.1),
+                              //       elevation: 0,
+                              //       onPressed: () {
+                              //         if (_formKey.currentState.validate()) {}
+                              //       },
+                              //       child: Icon(Icons.keyboard_arrow_right),
+                              //     )
+                              //   ],
+                              // )
                             ],
                           ),
                         ),
@@ -235,5 +307,18 @@ class _SignUpNextState extends State<SignUpNext> {
         ),
       ),
     );
+  }
+  void _handleLogin() async {
+    setState(() {
+      _isLoading = true;
+    });
+    var data = {
+      'ID' : controlUsername.text,
+      'PASSWORD' : controlPassword.text,
+      "FIRSTNAME": widget.value.name,
+      "LASTNAME": widget.value.lastname,
+      "EMAIL": widget.value.email,
+      "PHONE": widget.value.phone
+    };
   }
 }

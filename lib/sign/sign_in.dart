@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hew_maii/model/font_style.dart';
 import 'package:hew_maii/page/main_list.dart';
+import 'package:hew_maii/server/server.dart';
+
+import 'package:http/http.dart' as http;
 
 class SignIn extends StatefulWidget {
   @override
@@ -13,10 +19,55 @@ class DataLogin {
 }
 
 class _SignInState extends State<SignIn> {
+  bool visible = false;
+
   final _formKey = GlobalKey<FormState>();
   // Control Value in TextField
   TextEditingController controlUsername = new TextEditingController();
   TextEditingController controlPassword = new TextEditingController();
+
+  Future<List> login() async {
+    // print(response.body);
+    final response = await http.post(Server().AddressLogin, body: {
+      "username": controlUsername.text,
+      "password": controlPassword.text
+    });
+    var datauser = json.decode(response.body);
+    print(response.body);
+    if (datauser.length == 0) {
+      setState(() {
+        Fluttertoast.showToast(
+          msg: "ไม่พบข้อมูล",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.white,
+          textColor: Colors.orange,
+          fontSize: 16.0,
+        );
+      });
+    } else {
+      setState(() {
+        Fluttertoast.showToast(
+          msg: "สวัสดี คุณ${datauser[0]['cus_name']} !!!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.white,
+          textColor: Colors.orange,
+          fontSize: 16.0,
+        );
+      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainPageList(
+            value: DataLogin(
+                username: controlUsername.text, password: controlPassword.text),
+          ),
+        ),
+      );
+    }
+    return datauser;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,17 +210,7 @@ class _SignInState extends State<SignIn> {
                                   RaisedButton(
                                     onPressed: () {
                                       if (_formKey.currentState.validate()) {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => MainPageList(
-                                              value: DataLogin(
-                                                  username: controlUsername.text,
-                                                  password:
-                                                      controlPassword.text),
-                                            ),
-                                          ),
-                                        );
+                                        login();
                                       }
                                     },
                                     color: Colors.green,
