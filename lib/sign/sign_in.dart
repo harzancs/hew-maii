@@ -28,13 +28,14 @@ class _SignInState extends State<SignIn> {
 
   Future<List> login() async {
     // print(response.body);
-    final response = await http.post(Server().AddressLogin, body: {
+    final response = await http.post(Server().addressLogin, body: {
       "username": controlUsername.text,
       "password": controlPassword.text
     });
     var datauser = json.decode(response.body);
     print(response.body);
-    if (datauser.length == 0) {
+    var status = "${datauser[0]['status']}";
+    if (status == 'false') {
       setState(() {
         Fluttertoast.showToast(
           msg: "ไม่พบข้อมูล",
