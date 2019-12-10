@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hew_maii/model/font_style.dart';
 import 'package:hew_maii/page/food/insert_location.dart';
+import 'package:hew_maii/page/food/list_restaurant.dart';
 
 class ListFoodPage extends StatefulWidget {
   @override
@@ -8,7 +9,7 @@ class ListFoodPage extends StatefulWidget {
 }
 
 class _ListFoodPageState extends State<ListFoodPage> {
-  bool _setLocation;
+  bool _setLocation = true;
 
 
   @override
@@ -99,12 +100,12 @@ class _ListFoodPageState extends State<ListFoodPage> {
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(50),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.all(50),
+              // ),
               SingleChildScrollView(
                 child: Center(
-                  child: _setLocation ? insertLocation() : insertLocation(),
+                  child: _setLocation ? listRestaurent(context) : insertLocation(),
                 ),
               )
             ],
