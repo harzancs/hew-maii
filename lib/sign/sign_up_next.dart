@@ -72,7 +72,7 @@ class _SignUpNextState extends State<SignUpNext> {
     return datauser;
   }
 
-  bool _isLoading = false;
+  bool _isLoading = true;
 
   String pass;
 

@@ -14,8 +14,8 @@ class SignIn extends StatefulWidget {
 }
 
 class DataLogin {
-  final String username, password;
-  const DataLogin({this.username, this.password});
+  final String username, password, location;
+  const DataLogin({this.username, this.password, this.location});
 }
 
 class _SignInState extends State<SignIn> {
@@ -47,6 +47,7 @@ class _SignInState extends State<SignIn> {
         );
       });
     } else {
+      var textLocation = "${datauser[0]['cus_location']}";
       setState(() {
         Fluttertoast.showToast(
           msg: "สวัสดี คุณ${datauser[0]['cus_name']} !!!",
@@ -62,7 +63,7 @@ class _SignInState extends State<SignIn> {
         MaterialPageRoute(
           builder: (context) => MainPageList(
             value: DataLogin(
-                username: controlUsername.text, password: controlPassword.text),
+                username: controlUsername.text, password: controlPassword.text, location:textLocation),
           ),
         ),
       );
