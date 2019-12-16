@@ -24,7 +24,55 @@ class _SignUpNextState extends State<SignUpNext> {
   TextEditingController controlPassword = new TextEditingController();
   TextEditingController controlRepassword = new TextEditingController();
 
-  bool _isLoading = false;
+  Future<List> login() async {
+    // print(response.body);
+    final response = await http.post(Server().addressRegister, body: {
+      "username": controlUsername.text,
+      "password": controlPassword.text,
+      "name": widget.value.name,
+      "lastname": widget.value.lastname,
+      "email": widget.value.email,
+      "phone": widget.value.phone
+    });
+    var datauser = json.decode(response.body);
+    print(response.body);
+    var status = "${datauser[0]['status']}";
+    if (status == 'false') {
+      setState(() {
+        Fluttertoast.showToast(
+          msg: "Username นี้ ถูกใช้งานแล้ว",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.white,
+          textColor: Colors.orange,
+          fontSize: 16.0,
+        );
+      });
+    } else if (status == 'true') {
+      setState(() {
+        Fluttertoast.showToast(
+          msg: "ยินดีต้อนรับ คุณ" + widget.value.name + " !!!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.white,
+          textColor: Colors.orange,
+          fontSize: 16.0,
+        );
+      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainPageList(
+            value: DataLogin(
+                username: controlUsername.text, password: controlPassword.text),
+          ),
+        ),
+      );
+    }
+    return datauser;
+  }
+
+  bool _isLoading = true;
 
   String pass;
 

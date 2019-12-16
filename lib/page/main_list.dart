@@ -12,16 +12,23 @@ class MainPageList extends StatefulWidget {
 }
 
 class _MainPageListState extends State<MainPageList> {
+  bool setLocation;
   @override
   void initState() {
+    if (widget.value.location.isEmpty) {
+      setLocation = false;
+    }else{
+       setLocation = true;
+    }
     Map map = {
       "USERNAME": widget.value.username,
-      "PASSWORD": widget.value.password
+      "PASSWORD": widget.value.password,
+      "LOCATION": widget.value.location
     };
+
     print(map);
     super.initState();
   }
-
   int selectedIndex = 0;
   final widgetOptions = [
     ListFoodPage(),

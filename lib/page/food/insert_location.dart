@@ -9,6 +9,9 @@ Widget insertLocation() {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
+        Padding(
+          padding: EdgeInsets.all(50),
+        ),
         Icon(
           Icons.place,
           color: Colors.white,
