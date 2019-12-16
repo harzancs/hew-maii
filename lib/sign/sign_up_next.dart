@@ -24,49 +24,6 @@ class _SignUpNextState extends State<SignUpNext> {
   TextEditingController controlPassword = new TextEditingController();
   TextEditingController controlRepassword = new TextEditingController();
 
-  // Future<List> login() async {
-  //   // print(response.body);
-  //   final response = await http.post(Server().AddressLogin, body: {
-  //     "username": controlUsername.text,
-  //     "password": controlPassword.text
-  //   });
-  //   var datauser = json.decode(response.body);
-  //   print(response.body);
-  //   if (datauser.length == 0) {
-  //     setState(() {
-  //       Fluttertoast.showToast(
-  //         msg: "ไม่พบข้อมูล",
-  //         toastLength: Toast.LENGTH_SHORT,
-  //         gravity: ToastGravity.BOTTOM,
-  //         backgroundColor: Colors.white,
-  //         textColor: Colors.orange,
-  //         fontSize: 16.0,
-  //       );
-  //     });
-  //   } else {
-  //     setState(() {
-  //       Fluttertoast.showToast(
-  //         msg: "สวัสดี คุณ${datauser[0]['cus_name']} !!!",
-  //         toastLength: Toast.LENGTH_SHORT,
-  //         gravity: ToastGravity.BOTTOM,
-  //         backgroundColor: Colors.white,
-  //         textColor: Colors.orange,
-  //         fontSize: 16.0,
-  //       );
-  //     });
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //         builder: (context) => MainPageList(
-  //           value: DataLogin(
-  //               username: controlUsername.text, password: controlPassword.text),
-  //         ),
-  //       ),
-  //     );
-  //   }
-  //   return datauser;
-  // }
-
   bool _isLoading = false;
 
   String pass;
@@ -81,6 +38,55 @@ class _SignUpNextState extends State<SignUpNext> {
     };
     print(map);
     super.initState();
+  }
+
+  Future<List> login() async {
+    // print(response.body);
+    final response = await http.post(Server().addressRegister, body: {
+      "username": controlUsername.text,
+      "password": controlPassword.text,
+      "name": widget.value.name,
+      "lastname": widget.value.lastname,
+      "email": widget.value.email,
+      "phone": widget.value.phone
+    });
+    var datauser = json.decode(response.body);
+    print(response.body);
+    String status = '${datauser[0]['status']}';
+    print(status);
+    if (status == 'false') {
+      setState(() {
+        Fluttertoast.showToast(
+          msg: "Username ถูกใช้งานแล้ว",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.white,
+          textColor: Colors.orange,
+          fontSize: 16.0,
+        );
+      });
+    } else {
+      setState(() {
+        Fluttertoast.showToast(
+          msg: "สวัสดี คุณ !!!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.white,
+          textColor: Colors.orange,
+          fontSize: 16.0,
+        );
+      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainPageList(
+            value: DataLogin(
+                username: controlUsername.text, password: controlPassword.text),
+          ),
+        ),
+      );
+    }
+    return datauser;
   }
 
   @override
@@ -261,7 +267,9 @@ class _SignUpNextState extends State<SignUpNext> {
                                   children: <Widget>[
                                     RaisedButton(
                                       onPressed: () {
-                                        if (_formKey.currentState.validate()) {}
+                                        if (_formKey.currentState.validate()) {
+                                          login();
+                                        }
                                       },
                                       color: Colors.green,
                                       child: Text(
@@ -308,13 +316,14 @@ class _SignUpNextState extends State<SignUpNext> {
       ),
     );
   }
+
   void _handleLogin() async {
     setState(() {
       _isLoading = true;
     });
     var data = {
-      'ID' : controlUsername.text,
-      'PASSWORD' : controlPassword.text,
+      'ID': controlUsername.text,
+      'PASSWORD': controlPassword.text,
       "FIRSTNAME": widget.value.name,
       "LASTNAME": widget.value.lastname,
       "EMAIL": widget.value.email,
