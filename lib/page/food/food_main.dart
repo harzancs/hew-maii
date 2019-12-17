@@ -1,20 +1,94 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hew_maii/model/font_style.dart';
+import 'package:hew_maii/model/link_image.dart';
 import 'package:hew_maii/page/food/insert_location.dart';
-import 'package:hew_maii/page/food/list_restaurant.dart';
+import 'package:hew_maii/page/food/model/list_restaurent.dart';
+import 'package:hew_maii/server/server.dart';
+
+import 'package:http/http.dart' as http;
 
 class ListFoodPage extends StatefulWidget {
   @override
   _ListFoodPageState createState() => _ListFoodPageState();
 }
 
+class API {
+  static Future getUsers() {
+    return http.get(Server().addressListRestaurent);
+  }
+}
+
 class _ListFoodPageState extends State<ListFoodPage> {
   bool _setLocation = true;
 
+  var listRes = new List<ListRes>();
+
+  _getUsers() {
+    API.getUsers().then((response) {
+      setState(() {
+        print(response.body);
+        Iterable list = json.decode(response.body);
+        listRes = list.map((model) => ListRes.fromJson(model)).toList();
+      });
+    });
+  }
+
+  initState() {
+    super.initState();
+    _getUsers();
+  }
+
+  Widget listRestaurent() {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.76,
+      width: MediaQuery.of(context).size.width * 0.8,
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: listRes.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return Card(
+              child: InkWell(
+            onTap: () {
+              print(listRes[index].id);
+            },
+            child: Container(
+              height: 150,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(5.0),
+                      topRight: Radius.circular(5.0),
+                    ),
+                    child: Image.network(
+                        Link().imageMianRestaurent + '/' + listRes[index].image,
+                        width: 430,
+                        height: 90,
+                        fit: BoxFit.cover),
+                  ),
+                  Text(
+                    ' ' + listRes[index].name,
+                    style: TextStyle(
+                        fontFamily: FontStyles().fontFamily, fontSize: 18),
+                  )
+                ],
+              ),
+            ),
+          ));
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: true,
       body: Container(
         height: 1000,
         decoration: BoxDecoration(
@@ -105,7 +179,7 @@ class _ListFoodPageState extends State<ListFoodPage> {
               // ),
               SingleChildScrollView(
                 child: Center(
-                  child: _setLocation ? listRestaurent(context) : insertLocation(),
+                  child: _setLocation ? listRestaurent() : insertLocation(),
                 ),
               )
             ],

@@ -88,54 +88,54 @@ class _SignUpNextState extends State<SignUpNext> {
     super.initState();
   }
 
-  Future<List> login() async {
-    // print(response.body);
-    final response = await http.post(Server().addressRegister, body: {
-      "username": controlUsername.text,
-      "password": controlPassword.text,
-      "name": widget.value.name,
-      "lastname": widget.value.lastname,
-      "email": widget.value.email,
-      "phone": widget.value.phone
-    });
-    var datauser = json.decode(response.body);
-    print(response.body);
-    String status = '${datauser[0]['status']}';
-    print(status);
-    if (status == 'false') {
-      setState(() {
-        Fluttertoast.showToast(
-          msg: "Username ถูกใช้งานแล้ว",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.white,
-          textColor: Colors.orange,
-          fontSize: 16.0,
-        );
-      });
-    } else {
-      setState(() {
-        Fluttertoast.showToast(
-          msg: "สวัสดี คุณ !!!",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.white,
-          textColor: Colors.orange,
-          fontSize: 16.0,
-        );
-      });
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MainPageList(
-            value: DataLogin(
-                username: controlUsername.text, password: controlPassword.text),
-          ),
-        ),
-      );
-    }
-    return datauser;
-  }
+  // Future<List> login() async {
+  //   // print(response.body);
+  //   final response = await http.post(Server().addressRegister, body: {
+  //     "username": controlUsername.text,
+  //     "password": controlPassword.text,
+  //     "name": widget.value.name,
+  //     "lastname": widget.value.lastname,
+  //     "email": widget.value.email,
+  //     "phone": widget.value.phone
+  //   });
+  //   var datauser = json.decode(response.body);
+  //   print(response.body);
+  //   String status = '${datauser[0]['status']}';
+  //   print(status);
+  //   if (status == 'false') {
+  //     setState(() {
+  //       Fluttertoast.showToast(
+  //         msg: "Username ถูกใช้งานแล้ว",
+  //         toastLength: Toast.LENGTH_SHORT,
+  //         gravity: ToastGravity.BOTTOM,
+  //         backgroundColor: Colors.white,
+  //         textColor: Colors.orange,
+  //         fontSize: 16.0,
+  //       );
+  //     });
+  //   } else {
+  //     setState(() {
+  //       Fluttertoast.showToast(
+  //         msg: "สวัสดี คุณ !!!",
+  //         toastLength: Toast.LENGTH_SHORT,
+  //         gravity: ToastGravity.BOTTOM,
+  //         backgroundColor: Colors.white,
+  //         textColor: Colors.orange,
+  //         fontSize: 16.0,
+  //       );
+  //     });
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => MainPageList(
+  //           value: DataLogin(
+  //               username: controlUsername.text, password: controlPassword.text),
+  //         ),
+  //       ),
+  //     );
+  //   }
+  //   return datauser;
+  // }
 
   @override
   Widget build(BuildContext context) {
