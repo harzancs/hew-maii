@@ -1,7 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hew_maii/model/font_style.dart';
 import 'package:hew_maii/model/link_image.dart';
 import 'package:hew_maii/page/food/food_main.dart';
+import 'package:hew_maii/page/food/model/list_food.dart';
+import 'package:hew_maii/server/server.dart';
+
+import 'package:http/http.dart' as http;
 
 class ListMenuFood extends StatefulWidget {
   final DataRes value;
@@ -11,6 +17,25 @@ class ListMenuFood extends StatefulWidget {
 }
 
 class _ListMenuFoodState extends State<ListMenuFood> {
+  var listFood = new List<ListFood>();
+
+  Future<List> login() async {
+    // print(response.body);
+    final response = await http
+        .post(Server().addressListFood, body: {"ID_RES": widget.value.id});
+    var datauser = json.decode(response.body);
+    print(response.body);
+    var status = "${datauser[0]['status']}";
+    if (status != 'false') {
+      setState(() {
+        print(response.body);
+        Iterable list = json.decode(response.body);
+        listFood = list.map((model) => ListFood.fromJson(model)).toList();
+      });
+    } else {}
+    return datauser;
+  }
+
   @override
   void initState() {
     Map map = {
@@ -20,6 +45,7 @@ class _ListMenuFoodState extends State<ListMenuFood> {
     };
     print(map);
     super.initState();
+    login();
   }
 
   @override
@@ -66,8 +92,19 @@ class _ListMenuFoodState extends State<ListMenuFood> {
                   padding: EdgeInsets.all(10),
                 ),
                 Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          spreadRadius: 5,
+                          blurRadius: 5,
+                          offset: Offset(0, 7), // changes position of shadow
+                        ),
+                      ],
+                    ),
                     width: MediaQuery.of(context).size.width * 0.87,
-                    child: Card(
+                    // height: MediaQuery.of(context).size.height * 0.76,
+                    child: Container(
                       color: Colors.white,
                       child: Column(
                         children: <Widget>[
@@ -84,7 +121,51 @@ class _ListMenuFoodState extends State<ListMenuFood> {
                                 height: 90,
                                 fit: BoxFit.cover),
                           ),
-                          ListView()
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.62,
+                            child: ListView.separated(
+                              physics: BouncingScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              itemCount: listFood.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  color: Colors.white,
+                                  height: 50,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            " "+listFood[index].name,
+                                            style: TextStyle(
+                                                fontFamily:
+                                                    FontStyles().fontFamily,
+                                                fontSize: 18),
+                                          ),
+                                          Text(
+                                            " ["+listFood[index].price+" THB]",
+                                            style: TextStyle(
+                                                fontFamily:
+                                                    FontStyles().fontFamily,
+                                                fontSize: 14,color: Colors.grey),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                //Partitioning Components
+                                return new Divider(
+                                  color: Color(0xFFFFF6F18),
+                                );
+                              },
+                            ),
+                          )
                         ],
                       ),
                     ))

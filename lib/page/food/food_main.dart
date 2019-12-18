@@ -22,14 +22,15 @@ class API {
 }
 
 class DataRes {
-  final String id, nameRes, imageRes;
   const DataRes({this.id, this.nameRes, this.imageRes});
+
+  final String id, nameRes, imageRes;
 }
 
 class _ListFoodPageState extends State<ListFoodPage> {
-  bool _setLocation = true;
-
   var listRes = new List<ListRes>();
+
+  bool _setLocation = true;
 
   _getUsers() {
     API.getUsers().then((response) {
