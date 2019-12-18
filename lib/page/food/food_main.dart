@@ -1,20 +1,122 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hew_maii/model/font_style.dart';
+import 'package:hew_maii/model/link_image.dart';
 import 'package:hew_maii/page/food/insert_location.dart';
-import 'package:hew_maii/page/food/list_restaurant.dart';
+import 'package:hew_maii/page/food/list_menu_food.dart';
+import 'package:hew_maii/page/food/model/list_restaurent.dart';
+import 'package:hew_maii/server/server.dart';
+
+import 'package:http/http.dart' as http;
 
 class ListFoodPage extends StatefulWidget {
   @override
   _ListFoodPageState createState() => _ListFoodPageState();
 }
 
+class API {
+  static Future getUsers() {
+    return http.get(Server().addressListRestaurent);
+  }
+}
+
+class DataRes {
+  const DataRes({this.id, this.nameRes, this.imageRes});
+
+  final String id, nameRes, imageRes;
+}
+
 class _ListFoodPageState extends State<ListFoodPage> {
+  var listRes = new List<ListRes>();
+
   bool _setLocation = true;
 
+  _getUsers() {
+    API.getUsers().then((response) {
+      setState(() {
+        print(response.body);
+        Iterable list = json.decode(response.body);
+        listRes = list.map((model) => ListRes.fromJson(model)).toList();
+      });
+    });
+  }
+
+  initState() {
+    super.initState();
+    _getUsers();
+  }
+
+  Widget listRestaurent() {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.76,
+      width: MediaQuery.of(context).size.width * 0.87,
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: listRes.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return Card(
+              child: InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ListMenuFood(
+                      value: DataRes(
+                          id: listRes[index].id,
+                          nameRes: listRes[index].name,
+                          imageRes: listRes[index].image),
+                    ),
+                  ));
+            },
+            child: Container(
+              height: 150,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(5.0),
+                      topRight: Radius.circular(5.0),
+                    ),
+                    child: Image.network(
+                        Link().imageMianRestaurent + '/' + listRes[index].image,
+                        width: 430,
+                        height: 90,
+                        fit: BoxFit.cover),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        ' ' + listRes[index].name,
+                        style: TextStyle(
+                            fontFamily: FontStyles().fontFamily, fontSize: 18),
+                      ),
+                      Text(
+                        "เปิด ",
+                        style: TextStyle(
+                            fontFamily: FontStyles().fontFamily,
+                            fontSize: 18,
+                            color: Color(0xFFF38C61F)),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ));
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Container(
         height: 1000,
         decoration: BoxDecoration(
@@ -105,7 +207,7 @@ class _ListFoodPageState extends State<ListFoodPage> {
               // ),
               SingleChildScrollView(
                 child: Center(
-                  child: _setLocation ? listRestaurent(context) : insertLocation(),
+                  child: _setLocation ? listRestaurent() : insertLocation(),
                 ),
               )
             ],
