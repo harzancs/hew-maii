@@ -17,8 +17,8 @@ class _MainPageListState extends State<MainPageList> {
   void initState() {
     if (widget.value.location.isEmpty) {
       setLocation = false;
-    }else{
-       setLocation = true;
+    } else {
+      setLocation = true;
     }
     Map map = {
       "USERNAME": widget.value.username,
@@ -29,6 +29,7 @@ class _MainPageListState extends State<MainPageList> {
     print(map);
     super.initState();
   }
+
   int selectedIndex = 0;
   final widgetOptions = [
     ListFoodPage(),
@@ -39,7 +40,7 @@ class _MainPageListState extends State<MainPageList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: true,
+      resizeToAvoidBottomPadding: false,
       body: Container(
         height: 1000,
         decoration: BoxDecoration(
@@ -72,6 +73,7 @@ class _MainPageListState extends State<MainPageList> {
               )),
         ],
         currentIndex: selectedIndex,
+        // selectedItemColor: Colors.amber[800],
         fixedColor: Color(0xFFFF6F18),
         onTap: onItemTapped,
       ),
