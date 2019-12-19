@@ -19,7 +19,7 @@ class ListMenuFood extends StatefulWidget {
 class _ListMenuFoodState extends State<ListMenuFood> {
   var listFood = new List<ListFood>();
 
-  Future<List> login() async {
+  Future<List> getFood() async {
     // print(response.body);
     final response = await http
         .post(Server().addressListFood, body: {"ID_RES": widget.value.id});
@@ -45,8 +45,10 @@ class _ListMenuFoodState extends State<ListMenuFood> {
     };
     print(map);
     super.initState();
-    login();
+    getFood();
   }
+
+  int _count = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -129,28 +131,92 @@ class _ListMenuFoodState extends State<ListMenuFood> {
                               itemCount: listFood.length,
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
+                                
                                 return Container(
                                   color: Colors.white,
                                   height: 50,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
-                                            " "+listFood[index].name,
+                                            " " + listFood[index].name,
                                             style: TextStyle(
                                                 fontFamily:
                                                     FontStyles().fontFamily,
                                                 fontSize: 18),
                                           ),
                                           Text(
-                                            " ["+listFood[index].price+" THB]",
+                                            " [" +
+                                                listFood[index]
+                                                    .price
+                                                    .toString() +
+                                                " THB]",
                                             style: TextStyle(
                                                 fontFamily:
                                                     FontStyles().fontFamily,
-                                                fontSize: 14,color: Colors.grey),
+                                                fontSize: 14,
+                                                color: Colors.grey),
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          SizedBox(
+                                              width: 30,
+                                              child: FloatingActionButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    _count -= 1;
+                                                  });
+                                                },
+                                                heroTag: "btn_remove",
+                                                backgroundColor:
+                                                    Color(0xFFFFF6F18),
+                                                child: Icon(
+                                                  Icons.remove,
+                                                  color: Colors.white,
+                                                  size: 22,
+                                                ),
+                                              )),
+                                          Padding(
+                                            padding: EdgeInsets.all(5),
+                                          ),
+                                          Text(
+                                            '',
+                                            style: TextStyle(
+                                                fontFamily:
+                                                    FontStyles().fontFamily,
+                                                fontSize: 18),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.all(5),
+                                          ),
+                                          SizedBox(
+                                              width: 30,
+                                              child: FloatingActionButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    _count += 1;
+                                                  });
+                                                },
+                                                heroTag: "btn_add",
+                                                backgroundColor:
+                                                    Color(0xFFFFF6F18),
+                                                child: Icon(
+                                                  Icons.add,
+                                                  color: Colors.white,
+                                                  size: 22,
+                                                ),
+                                              )),
+                                          Padding(
+                                            padding: EdgeInsets.all(5),
                                           )
                                         ],
                                       )
@@ -191,7 +257,7 @@ class _ListMenuFoodState extends State<ListMenuFood> {
                   size: 30,
                 ),
                 Text(
-                  "3",
+                  "$_count",
                   style: TextStyle(
                       color: Color(0xFFFF6F18),
                       fontFamily: FontStyles().fontFamily,

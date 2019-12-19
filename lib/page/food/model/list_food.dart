@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 class ListFood {
   String id;
@@ -6,7 +5,7 @@ class ListFood {
   String image;
   String price;
 
-  ListFood(String id, String name, String image) {
+  ListFood(String id, String name, String image, String price) {
     this.id = id;
     this.name = name;
     this.image = image;
