@@ -20,6 +20,8 @@ class ListMenuFood extends StatefulWidget {
 class _ListMenuFoodState extends State<ListMenuFood> {
   var listFood = new List<ListFood>();
 
+  List listFoodSelect = [];
+
   Future<List> getFood() async {
     // print(response.body);
     final response = await http
@@ -193,6 +195,8 @@ class _ListMenuFoodState extends State<ListMenuFood> {
                                                               .price);
                                                       _priceFood =
                                                           _priceFood - priceIni;
+
+                                                          //--------------//
                                                     }
                                                   });
                                                 },
