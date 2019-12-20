@@ -5,6 +5,7 @@ import 'package:hew_maii/model/font_style.dart';
 import 'package:hew_maii/model/link_image.dart';
 import 'package:hew_maii/page/food/food_main.dart';
 import 'package:hew_maii/page/food/model/list_food.dart';
+import 'package:hew_maii/page/food/order_food.dart';
 import 'package:hew_maii/server/server.dart';
 
 import 'package:http/http.dart' as http;
@@ -48,7 +49,9 @@ class _ListMenuFoodState extends State<ListMenuFood> {
     getFood();
   }
 
+  List<int> _counter = List();
   int _count = 0;
+  int _priceFood = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +134,9 @@ class _ListMenuFoodState extends State<ListMenuFood> {
                               itemCount: listFood.length,
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                
+                                if (_counter.length < listFood.length) {
+                                  _counter.add(0);
+                                }
                                 return Container(
                                   color: Colors.white,
                                   height: 50,
@@ -157,7 +162,7 @@ class _ListMenuFoodState extends State<ListMenuFood> {
                                                 listFood[index]
                                                     .price
                                                     .toString() +
-                                                " THB]",
+                                                " บาท]",
                                             style: TextStyle(
                                                 fontFamily:
                                                     FontStyles().fontFamily,
@@ -169,55 +174,75 @@ class _ListMenuFoodState extends State<ListMenuFood> {
                                       Row(
                                         children: <Widget>[
                                           SizedBox(
-                                              width: 30,
-                                              child: FloatingActionButton(
+                                              width: 50,
+                                              height: 40,
+                                              child: FlatButton(
+                                                shape:
+                                                    new RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          90.0),
+                                                ),
                                                 onPressed: () {
                                                   setState(() {
-                                                    _count -= 1;
+                                                    if (_counter[index] > 0) {
+                                                      _counter[index]--;
+                                                      _count -= 1;
+                                                      int priceIni = int.parse(
+                                                          listFood[index]
+                                                              .price);
+                                                      _priceFood =
+                                                          _priceFood - priceIni;
+                                                    }
                                                   });
                                                 },
-                                                heroTag: "btn_remove",
-                                                backgroundColor:
-                                                    Color(0xFFFFF6F18),
                                                 child: Icon(
                                                   Icons.remove,
-                                                  color: Colors.white,
+                                                  color: Color(0xFFFFF6F18),
                                                   size: 22,
                                                 ),
                                               )),
-                                          Padding(
-                                            padding: EdgeInsets.all(5),
-                                          ),
                                           Text(
-                                            '',
+                                            '${_counter[index]}',
                                             style: TextStyle(
                                                 fontFamily:
                                                     FontStyles().fontFamily,
                                                 fontSize: 18),
                                           ),
-                                          Padding(
-                                            padding: EdgeInsets.all(5),
-                                          ),
                                           SizedBox(
-                                              width: 30,
-                                              child: FloatingActionButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    _count += 1;
-                                                  });
-                                                },
-                                                heroTag: "btn_add",
-                                                backgroundColor:
-                                                    Color(0xFFFFF6F18),
-                                                child: Icon(
-                                                  Icons.add,
-                                                  color: Colors.white,
-                                                  size: 22,
-                                                ),
-                                              )),
-                                          Padding(
-                                            padding: EdgeInsets.all(5),
-                                          )
+                                              width: 50,
+                                              height: 40,
+                                              child: FlatButton(
+                                                  shape:
+                                                      new RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        new BorderRadius
+                                                            .circular(30.0),
+                                                  ),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      if (_count < 10) {
+                                                        _count += 1;
+                                                        _counter[index]++;
+                                                        int priceIni =
+                                                            int.parse(
+                                                                listFood[index]
+                                                                    .price);
+                                                        _priceFood =
+                                                            _priceFood +
+                                                                priceIni;
+                                                      }
+                                                    });
+                                                  },
+                                                  // backgroundColor:
+                                                  //     Color(0xFFFFF6F18),
+                                                  child: Center(
+                                                    child: Icon(
+                                                      Icons.add,
+                                                      color: Color(0xFFFFF6F18),
+                                                      size: 22,
+                                                    ),
+                                                  ))),
                                         ],
                                       )
                                     ],
@@ -266,11 +291,11 @@ class _ListMenuFoodState extends State<ListMenuFood> {
               ],
             ),
             Text(
-              "150THB",
+              "รวม $_priceFood บาท",
               style: TextStyle(
                   color: Color(0xFFFF6F18),
                   fontFamily: FontStyles().fontFamily,
-                  fontSize: 16),
+                  fontSize: 18),
             ),
             Row(
               children: <Widget>[
@@ -283,7 +308,13 @@ class _ListMenuFoodState extends State<ListMenuFood> {
                         fontFamily: FontStyles().fontFamily,
                         fontSize: 16),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OrderFood(),
+                        ));
+                  },
                 ),
                 Container(
                   height: 60.0,
