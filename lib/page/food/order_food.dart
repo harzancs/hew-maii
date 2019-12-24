@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hew_maii/model/font_style.dart';
 import 'package:hew_maii/page/food/list_menu_food.dart';
 import 'package:hew_maii/page/food/model/model_order.dart';
+import 'package:hew_maii/page/timeline_user/main_timeline.dart';
 
 class OrderFood extends StatefulWidget {
   final DataSelectFood value;
@@ -236,7 +237,13 @@ class _OrderFoodState extends State<OrderFood> {
               width: 5.0,
             ),
             RaisedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MainTimeLine(),
+                    ));
+              },
               color: Color(0xFFFF6F18),
               child: Text(
                 "ยืนยันรายการ",
