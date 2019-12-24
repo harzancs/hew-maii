@@ -10,6 +10,18 @@ import 'package:hew_maii/server/server.dart';
 
 import 'package:http/http.dart' as http;
 
+// Future<bool> setStringList(String key, List<String> value) async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   List<String> myList = (prefs.getStringList('name') ?? List<String>());
+//   await prefs.setStringList('name', myList);
+// }
+
+// Future<String> getFoodPreference() async {
+//   SharedPreferences perfs = await SharedPreferences.getInstance();
+//   String name = perfs.getString("name");
+//   return name;
+// }
+
 class ListMenuFood extends StatefulWidget {
   final DataRes value;
   ListMenuFood({Key key, this.value}) : super(key: key);
@@ -19,6 +31,7 @@ class ListMenuFood extends StatefulWidget {
 
 class _ListMenuFoodState extends State<ListMenuFood> {
   var listFood = new List<ListFood>();
+  Map<String, List> foodSelectMap;
 
   List listFoodSelect = [];
 
@@ -52,6 +65,8 @@ class _ListMenuFoodState extends State<ListMenuFood> {
   }
 
   List<int> _counter = List();
+  // List<String> _idfood = List();
+  // List<String> _pricefood = List();
   int _count = 0;
   int _priceFood = 0;
 
@@ -138,7 +153,12 @@ class _ListMenuFoodState extends State<ListMenuFood> {
                               itemBuilder: (context, index) {
                                 if (_counter.length < listFood.length) {
                                   _counter.add(0);
+                                  // _namefood.add('');
                                 }
+                                // for (i = 0; i < listFood.length; i++) {
+                                //   _namefood.add(listFood[i].name);
+                                //   _pricefood.add(listFood[i].price);
+                                // }
                                 return Container(
                                   color: Colors.white,
                                   height: 50,
@@ -196,7 +216,7 @@ class _ListMenuFoodState extends State<ListMenuFood> {
                                                       _priceFood =
                                                           _priceFood - priceIni;
 
-                                                          //--------------//
+                                                      //--------------//
                                                     }
                                                   });
                                                 },
@@ -313,11 +333,25 @@ class _ListMenuFoodState extends State<ListMenuFood> {
                         fontSize: 16),
                   ),
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => OrderFood(),
-                        ));
+                    print(_counter);
+                    for (int i = 0; i < listFood.length; i++) {
+                      if (_counter[i] != 0) {
+                        foodSelectMap["s"] = [
+                          {
+                            // "name": listFood[i].name,
+                            // "price": listFood[i].price,
+                            // "count": _counter[i]
+                            "name": "na"
+                          }
+                        ];
+                      }
+                    }
+                    print(foodSelectMap);
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) => OrderFood(),
+                    //     ));
                   },
                 ),
                 Container(
@@ -332,5 +366,9 @@ class _ListMenuFoodState extends State<ListMenuFood> {
         notchMargin: 8.0,
       ),
     );
+  }
+
+  void saveFood() {
+    setState(() {});
   }
 }

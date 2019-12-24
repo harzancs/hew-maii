@@ -24,6 +24,7 @@ dependencies:
   localstorage:
   sqflite: ^1.1.5
   scoped_model:
+  shared_preferences: any
   # api google
   geolocator: ^5.1.3
   # api google
