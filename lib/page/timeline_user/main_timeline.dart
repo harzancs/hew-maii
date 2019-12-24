@@ -7,9 +7,42 @@ class MainTimeLine extends StatefulWidget {
 }
 
 class _MainTimeLineState extends State<MainTimeLine> {
+  int _currentStep = 0;
+
+  List<Step> _mySteps() {
+    List<Step> _steps = [
+      Step(
+        title: Text("Step 1"),
+        content: Container(
+          child: Column(
+            children: <Widget>[Text("ชื่อคนส่ง :")],
+          ),
+        ),
+        isActive: _currentStep >= 0,
+      ),
+      Step(
+        title: Text("Step 2"),
+        content: TextField(),
+        isActive: _currentStep >= 1,
+      ),
+      Step(
+        title: Text("Step 3"),
+        content: TextField(),
+        isActive: _currentStep >= 2,
+      ),
+      Step(
+        title: Text("Step 4"),
+        content: TextField(),
+        isActive: _currentStep >= 3,
+      )
+    ];
+    return _steps;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Container(
         height: 1000,
         decoration: BoxDecoration(
@@ -50,9 +83,23 @@ class _MainTimeLineState extends State<MainTimeLine> {
               Padding(
                 padding: EdgeInsets.all(10),
               ),
-              SingleChildScrollView(
-                child: Column(),
-              )
+              Container(
+                color: Colors.white,
+                width: MediaQuery.of(context).size.width * 0.87,
+                child: Column(
+                  children: <Widget>[
+                    Stepper(
+                      steps: _mySteps(),
+                      currentStep: this._currentStep,
+                      onStepTapped: (step) {
+                        setState(() {
+                          this._currentStep = step;
+                        });
+                      },
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
         ),
