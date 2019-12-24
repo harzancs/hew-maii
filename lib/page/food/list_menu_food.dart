@@ -29,6 +29,12 @@ class ListMenuFood extends StatefulWidget {
   _ListMenuFoodState createState() => _ListMenuFoodState();
 }
 
+class DataSelectFood {
+  const DataSelectFood({this.foodselect});
+
+  final List foodselect;
+}
+
 class _ListMenuFoodState extends State<ListMenuFood> {
   var listFood = new List<ListFood>();
   Map<String, List> foodSelectMap;
@@ -255,6 +261,8 @@ class _ListMenuFoodState extends State<ListMenuFood> {
                                                         _priceFood =
                                                             _priceFood +
                                                                 priceIni;
+                                                        //------------------//
+
                                                       }
                                                     });
                                                   },
@@ -333,25 +341,7 @@ class _ListMenuFoodState extends State<ListMenuFood> {
                         fontSize: 16),
                   ),
                   onPressed: () {
-                    print(_counter);
-                    for (int i = 0; i < listFood.length; i++) {
-                      if (_counter[i] != 0) {
-                        foodSelectMap["s"] = [
-                          {
-                            // "name": listFood[i].name,
-                            // "price": listFood[i].price,
-                            // "count": _counter[i]
-                            "name": "na"
-                          }
-                        ];
-                      }
-                    }
-                    print(foodSelectMap);
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //       builder: (context) => OrderFood(),
-                    //     ));
+                    addValue();
                   },
                 ),
                 Container(
@@ -368,7 +358,27 @@ class _ListMenuFoodState extends State<ListMenuFood> {
     );
   }
 
-  void saveFood() {
-    setState(() {});
+  void addValue() {
+    List _selectFood = [];
+    setState(() {
+      for (int i = 0; i < listFood.length; i++) {
+        if (_counter[i] != 0) {
+          _selectFood.add({
+            "id": listFood[i].id,
+            "name": listFood[i].name,
+            "price": listFood[i].price,
+            "count": _counter[i]
+          });
+        }
+      }
+    });
+    if (_count != 0) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                OrderFood(value: DataSelectFood(foodselect: _selectFood)),
+          ));
+    }
   }
 }
