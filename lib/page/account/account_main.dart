@@ -1,11 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:hew_maii/homePage.dart';
 import 'package:hew_maii/model/font_style.dart';
+import 'package:hew_maii/page/account/edit_location.dart';
+import 'package:hew_maii/page/account/edit_person.dart';
 import 'package:hew_maii/page/account/model/list_custumer.dart';
-import 'package:hew_maii/server/server.dart';
 
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ListAccountPage extends StatefulWidget {
@@ -33,6 +32,62 @@ class _ListAccountPageState extends State<ListAccountPage> {
       logPhone = prefs.getString('myPhone') ?? '';
       logEmail = prefs.getString('myEmail') ?? '';
     });
+  }
+
+  _removeData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
+
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text(
+            "ออกจากระบบหรือไม่ ?",
+            style: TextStyle(
+                fontFamily: FontStyles().fontFamily,
+                fontSize: 20,
+                color: Colors.black),
+          ),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: new Text(
+                "ไม่",
+                style: TextStyle(
+                    fontFamily: FontStyles().fontFamily,
+                    fontSize: 14,
+                    color: Colors.black),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            RaisedButton(
+              color: Colors.redAccent,
+              child: new Text(
+                "ใช่",
+                style: TextStyle(
+                    fontFamily: FontStyles().fontFamily,
+                    fontSize: 14,
+                    color: Colors.white),
+              ),
+              onPressed: () {
+                _removeData();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyHomePage()),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -172,7 +227,13 @@ class _ListAccountPageState extends State<ListAccountPage> {
                       )),
                       Card(
                           child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EditPerson()),
+                                );
+                              },
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.9,
                                 height: 50,
@@ -186,7 +247,13 @@ class _ListAccountPageState extends State<ListAccountPage> {
                               ))),
                       Card(
                           child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EditLocation()),
+                                );
+                              },
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.9,
                                 height: 50,
@@ -214,7 +281,9 @@ class _ListAccountPageState extends State<ListAccountPage> {
                                 shape: new RoundedRectangleBorder(
                                   borderRadius: new BorderRadius.circular(9.0),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  _showDialog();
+                                },
                                 padding: EdgeInsets.all(8.0),
                                 color: Colors.redAccent,
                                 child: Text(
