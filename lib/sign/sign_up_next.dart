@@ -63,8 +63,6 @@ class _SignUpNextState extends State<SignUpNext> {
         context,
         MaterialPageRoute(
           builder: (context) => MainPageList(
-            value: DataLogin(
-                username: controlUsername.text, password: controlPassword.text),
           ),
         ),
       );

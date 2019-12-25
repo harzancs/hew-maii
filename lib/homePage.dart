@@ -1,7 +1,16 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hew_maii/model/font_style.dart';
+import 'package:hew_maii/page/main_list.dart';
+import 'package:hew_maii/server/server.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'sign/sign_in.dart';
 import 'sign/sign_up.dart';
+
+import 'package:http/http.dart' as http;
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -9,6 +18,55 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  var logUser, logPass;
+  @override
+  void initState() {
+    Timer(Duration(seconds: 1), () => getLogin());
+
+    super.initState();
+  }
+
+  getLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    logUser = prefs.getString('myUsername') ?? '';
+    logPass = prefs.getString('myPassword') ?? '';
+    if (logUser?.isNotEmpty ?? true) {
+      print(logUser);
+      login();
+    }
+  }
+
+  Future<List> login() async {
+    // print(response.body);
+    final response = await http.post(Server().addressLogin,
+        body: {"username": logUser, "password": logPass});
+    var datauser = json.decode(response.body);
+    print("DATA FROM DB : " + response.body);
+    var status = "${datauser[0]['status']}";
+    print("PRINT STATUS : " + status);
+    if (status == 'false') {
+    } else {
+      setState(() {
+        Fluttertoast.showToast(
+          msg: "สวัสดี คุณ${datauser[0]['cus_name']} !!!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.white,
+          textColor: Colors.orange,
+          fontSize: 16.0,
+        );
+      });
+      CircularProgressIndicator();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainPageList(),
+        ),
+      );
+    }
+    return datauser;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,20 +138,22 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                         ),
-                         Padding(
-                    padding: EdgeInsets.all(2),
-                  ),
+                        Padding(
+                          padding: EdgeInsets.all(2),
+                        ),
                         ButtonTheme(
                           minWidth: 300.0,
                           child: RaisedButton(
                             shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(9.0),
                             ),
-                            onPressed: () {Navigator.push(
+                            onPressed: () {
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => SignUp()),
-                              );},
+                              );
+                            },
                             padding: EdgeInsets.all(8.0),
                             color: Color.fromRGBO(250, 250, 250, 150),
                             child: Text(

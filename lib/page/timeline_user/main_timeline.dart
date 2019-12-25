@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hew_maii/model/font_style.dart';
+import 'package:hew_maii/page/main_list.dart';
 
 class MainTimeLine extends StatefulWidget {
   @override
@@ -62,7 +63,11 @@ class _MainTimeLineState extends State<MainTimeLine> {
                   children: <Widget>[
                     IconButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MainPageList(),
+                            ));
                       },
                       icon: Icon(
                         Icons.home,

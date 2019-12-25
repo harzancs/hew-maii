@@ -9,6 +9,7 @@ import 'package:hew_maii/page/food/model/list_restaurent.dart';
 import 'package:hew_maii/server/server.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ListFoodPage extends StatefulWidget {
   @override
@@ -30,7 +31,27 @@ class DataRes {
 class _ListFoodPageState extends State<ListFoodPage> {
   var listRes = new List<ListRes>();
 
-  bool _setLocation = true;
+  bool _setLocation = false;
+  var valueLocal;
+
+  @override
+  void initState() {
+    super.initState();
+    readLocal();
+  }
+
+  readLocal() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final key = 'myLocal';
+    valueLocal = prefs.getString(key) ?? '';
+    print('read Local : $valueLocal');
+    if (valueLocal?.isEmpty ?? true) {
+      _setLocation = false;
+    } else {
+      _setLocation = true;
+      _getUsers();
+    }
+  }
 
   _getUsers() {
     API.getUsers().then((response) {
@@ -40,11 +61,6 @@ class _ListFoodPageState extends State<ListFoodPage> {
         listRes = list.map((model) => ListRes.fromJson(model)).toList();
       });
     });
-  }
-
-  initState() {
-    super.initState();
-    _getUsers();
   }
 
   Widget listRestaurent() {
@@ -193,7 +209,7 @@ class _ListFoodPageState extends State<ListFoodPage> {
                       padding: EdgeInsets.all(9),
                     ),
                     Text(
-                      _setLocation ? "ร้านไกล้คุณ : " : "",
+                      _setLocation ? "ร้านไกล้คุณ : $valueLocal " : "",
                       style: TextStyle(
                           fontFamily: FontStyles().fontFamily,
                           fontSize: 20,

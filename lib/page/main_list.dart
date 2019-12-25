@@ -1,42 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:hew_maii/model/font_style.dart';
+import 'package:hew_maii/page/account/account_main.dart';
 import 'package:hew_maii/page/driver/driver_main.dart';
 import 'package:hew_maii/page/food/food_main.dart';
-import 'package:hew_maii/sign/sign_in.dart';
 
 class MainPageList extends StatefulWidget {
-  final DataLogin value;
-  MainPageList({Key key, this.value}) : super(key: key);
+  // final DataLogin value;
+  // MainPageList({Key key, this.value}) : super(key: key);
   @override
   _MainPageListState createState() => _MainPageListState();
 }
 
 class _MainPageListState extends State<MainPageList> {
-  bool setLocation;
-  @override
-  void initState() {
-    if (widget.value.location.isEmpty) {
-      setLocation = false;
-    } else {
-      setLocation = true;
-    }
-    Map map = {
-      "USERNAME": widget.value.username,
-      "PASSWORD": widget.value.password,
-      "LOCATION": widget.value.location
-    };
-
-    print(map);
-    super.initState();
-  }
-
+  
+  
   int selectedIndex = 0;
   final widgetOptions = [
     ListFoodPage(),
     ListDriverPage(),
-    Text('Favourites'),
+    ListAccountPage(),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

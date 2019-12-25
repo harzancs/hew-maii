@@ -7,6 +7,7 @@ import 'package:hew_maii/page/main_list.dart';
 import 'package:hew_maii/server/server.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -33,8 +34,9 @@ class _SignInState extends State<SignIn> {
       "password": controlPassword.text
     });
     var datauser = json.decode(response.body);
-    print(response.body);
+    print("DATA FROM DB : " + response.body);
     var status = "${datauser[0]['status']}";
+    print("PRINT STATUS : " + status);
     if (status == 'false') {
       setState(() {
         Fluttertoast.showToast(
@@ -57,14 +59,19 @@ class _SignInState extends State<SignIn> {
           textColor: Colors.orange,
           fontSize: 16.0,
         );
+        _saveUser(controlUsername.text);
+        _savePass(controlPassword.text);
+        _saveLocal(textLocation);
+        _saveName(datauser[0]['cus_name']);
+        _saveLastname(datauser[0]['cus_lastname']);
+        _savePhone(datauser[0]['cus_phone']);
+        _saveEmail(datauser[0]['cus_email']);
       });
+      CircularProgressIndicator();
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => MainPageList(
-            value: DataLogin(
-                username: controlUsername.text, password: controlPassword.text, location:textLocation),
-          ),
+          builder: (context) => MainPageList(),
         ),
       );
     }
@@ -239,5 +246,61 @@ class _SignInState extends State<SignIn> {
         ),
       ),
     );
+  }
+
+  Future<String> _saveUser(String user) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'myUsername';
+    final value = user;
+    prefs.setString(key, value);
+    print('saved $value');
+  }
+
+  Future<String> _savePass(String pass) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'myPassword';
+    final value = pass;
+    prefs.setString(key, value);
+    print('saved $value');
+  }
+
+  Future<String> _saveLocal(String local) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'myLocal';
+    final value = local;
+    prefs.setString(key, value);
+    print('saved $value');
+  }
+
+  Future<String> _saveName(String name) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'myName';
+    final value = name;
+    prefs.setString(key, value);
+    print('saved $value');
+  }
+
+  Future<String> _saveLastname(String lastname) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'myLastname';
+    final value = lastname;
+    prefs.setString(key, value);
+    print('saved $value');
+  }
+
+  Future<String> _savePhone(String phone) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'myPhone';
+    final value = phone;
+    prefs.setString(key, value);
+    print('saved $value');
+  }
+
+  Future<String> _saveEmail(String email) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'myEmail';
+    final value = email;
+    prefs.setString(key, value);
+    print('saved $value');
   }
 }
