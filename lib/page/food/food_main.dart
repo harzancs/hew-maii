@@ -98,7 +98,7 @@ class _ListFoodPageState extends State<ListFoodPage> {
                       topRight: Radius.circular(5.0),
                     ),
                     child: Image.network(
-                        Link().imageMianRestaurent + '/' + listRes[index].image,
+                        Link().imageMianRestaurent + '' + listRes[index].image,
                         width: 430,
                         height: 90,
                         fit: BoxFit.cover),
@@ -119,7 +119,26 @@ class _ListFoodPageState extends State<ListFoodPage> {
                             color: Color(0xFFF38C61F)),
                       )
                     ],
-                  )
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        ' ',
+                        style: TextStyle(
+                            fontFamily: FontStyles().fontFamily, fontSize: 18),
+                      ),
+                      Text(
+                        listRes[index].timeOpen.substring(0, 5) +
+                            ' น. - ' +
+                            listRes[index].timeClose.substring(0, 5) +
+                            ' น. ',
+                        style: TextStyle(
+                            fontFamily: FontStyles().fontFamily,
+                            fontSize: 16,),
+                      )
+                    ],
+                  ),
                 ],
               ),
             ),

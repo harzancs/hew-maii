@@ -79,6 +79,18 @@ class _ListMenuFoodState extends State<ListMenuFood> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Color(0xFFFFF6F18)),
+        backgroundColor: Colors.white,
+        title: Text(
+          widget.value.nameRes,
+          style: TextStyle(
+              fontSize: 24,
+              fontFamily: FontStyles().fontFamily,
+              color: Color(0xFFFFF6F18)),
+        ),
+      ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -89,31 +101,13 @@ class _ListMenuFoodState extends State<ListMenuFood> {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.all(15),
+                  padding: EdgeInsets.all(0),
                 ),
                 Container(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
-                          size: 46,
-                        ),
-                      ),
-                      Text(
-                        widget.value.nameRes + " ",
-                        style: TextStyle(
-                            fontSize: 24,
-                            fontFamily: FontStyles().fontFamily,
-                            color: Colors.white),
-                      )
-                    ],
+                    children: <Widget>[],
                   ),
                 ),
                 Padding(
@@ -143,7 +137,7 @@ class _ListMenuFoodState extends State<ListMenuFood> {
                             ),
                             child: Image.network(
                                 Link().imageMianRestaurent +
-                                    '/' +
+                                    '' +
                                     widget.value.imageRes,
                                 width: 430,
                                 height: 90,
@@ -364,6 +358,7 @@ class _ListMenuFoodState extends State<ListMenuFood> {
       for (int i = 0; i < listFood.length; i++) {
         if (_counter[i] != 0) {
           _selectFood.add({
+            "idRes": widget.value.id,
             "id": listFood[i].id,
             "name": listFood[i].name,
             "price": listFood[i].price,

@@ -44,6 +44,26 @@ class _MainTimeLineState extends State<MainTimeLine> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
+      appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: new IconButton(
+              icon: new Icon(
+                Icons.home,
+                color: Color(0xFFFFF6F18),
+                size: 30,
+              ),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MainPageList(),
+                  ))),
+          title: Text(
+            'การดำเนินการ',
+            style: TextStyle(
+                fontSize: 24,
+                fontFamily: FontStyles().fontFamily,
+                color: Color(0xFFFFF6F18)),
+          )),
       body: Container(
         height: 1000,
         decoration: BoxDecoration(
@@ -54,35 +74,13 @@ class _MainTimeLineState extends State<MainTimeLine> {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.all(15),
+                padding: EdgeInsets.all(0),
               ),
               Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MainPageList(),
-                            ));
-                      },
-                      icon: Icon(
-                        Icons.home,
-                        color: Colors.white,
-                        size: 46,
-                      ),
-                    ),
-                    Text(
-                      "ดำเนินการ ",
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontFamily: FontStyles().fontFamily,
-                          color: Colors.white),
-                    )
-                  ],
+                  children: <Widget>[],
                 ),
               ),
               Padding(

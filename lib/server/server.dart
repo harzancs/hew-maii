@@ -7,5 +7,7 @@ class Server {
       "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiGetAllRestaurent.php";
   String addressListFood =
       "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiGetFood.php";
+  String billOrder =
+      "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiPushBillOrder.php";
   Server() : super();
 }

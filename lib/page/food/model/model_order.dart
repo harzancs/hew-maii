@@ -1,10 +1,12 @@
 class ListOrder {
+  String idRes;
   String id;
   String name;
   String price;
   int count;
 
-  ListOrder(String id, String name, String price, int count) {
+  ListOrder(String idRes, String id, String name, String price, int count) {
+    this.idRes = idRes;
     this.id = id;
     this.name = name;
     this.price = price;
@@ -12,12 +14,19 @@ class ListOrder {
   }
 
   ListOrder.fromJson(Map json)
-      : id = json['id'],
+      : idRes = json['idRes'],
+        id = json['id'],
         name = json['name'],
         price = json['price'],
         count = json['count'];
 
   Map toJson() {
-    return {'id': id, 'name': name, 'price': price, 'count': count};
+    return {
+      'idRes': idRes,
+      'id': id,
+      'name': name,
+      'price': price,
+      'count': count
+    };
   }
 }

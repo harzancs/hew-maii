@@ -5,7 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hew_maii/model/font_style.dart';
 import 'package:hew_maii/page/main_list.dart';
 import 'package:hew_maii/server/server.dart';
-import 'package:hew_maii/sign/sign_in.dart';
 import 'package:hew_maii/sign/sign_up.dart';
 
 import 'package:http/http.dart' as http;
@@ -62,8 +61,7 @@ class _SignUpNextState extends State<SignUpNext> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => MainPageList(
-          ),
+          builder: (context) => MainPageList(),
         ),
       );
     }
@@ -85,55 +83,6 @@ class _SignUpNextState extends State<SignUpNext> {
     print(map);
     super.initState();
   }
-
-  // Future<List> _login() async {
-  //   // print(response.body);
-  //   final response = await http.post(Server().addressRegister, body: {
-  //     "username": controlUsername.text,
-  //     "password": controlPassword.text,
-  //     "name": widget.value.name,
-  //     "lastname": widget.value.lastname,
-  //     "email": widget.value.email,
-  //     "phone": widget.value.phone
-  //   });
-  //   var datauser = json.decode(response.body);
-  //   print(response.body);
-  //   String status = '${datauser[0]['status']}';
-  //   print(status);
-  //   if (status == 'false') {
-  //     setState(() {
-  //       Fluttertoast.showToast(
-  //         msg: "Username ถูกใช้งานแล้ว",
-  //         toastLength: Toast.LENGTH_SHORT,
-  //         gravity: ToastGravity.BOTTOM,
-  //         backgroundColor: Colors.white,
-  //         textColor: Colors.orange,
-  //         fontSize: 16.0,
-  //       );
-  //     });
-  //   } else {
-  //     setState(() {
-  //       Fluttertoast.showToast(
-  //         msg: "สวัสดี คุณ !!!",
-  //         toastLength: Toast.LENGTH_SHORT,
-  //         gravity: ToastGravity.BOTTOM,
-  //         backgroundColor: Colors.white,
-  //         textColor: Colors.orange,
-  //         fontSize: 16.0,
-  //       );
-  //     });
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //         builder: (context) => MainPageList(
-  //           value: DataLogin(
-  //               username: controlUsername.text, password: controlPassword.text),
-  //         ),
-  //       ),
-  //     );
-  //   }
-  //   return datauser;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -329,25 +278,6 @@ class _SignUpNextState extends State<SignUpNext> {
                                       textColor: Colors.white,
                                     ),
                                   ])
-
-                              // ButtonBar(
-                              //   alignment: MainAxisAlignment.end,
-                              //   children: <Widget>[
-                              //     FloatingActionButton(
-                              //       shape: RoundedRectangleBorder(
-                              //           side: BorderSide(color: Colors.white),
-                              //           borderRadius:
-                              //               BorderRadius.circular(30)),
-                              //       backgroundColor:
-                              //           Colors.white.withOpacity(0.1),
-                              //       elevation: 0,
-                              //       onPressed: () {
-                              //         if (_formKey.currentState.validate()) {}
-                              //       },
-                              //       child: Icon(Icons.keyboard_arrow_right),
-                              //     )
-                              //   ],
-                              // )
                             ],
                           ),
                         ),
