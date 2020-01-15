@@ -40,6 +40,8 @@ class _OrderFoodState extends State<OrderFood> {
   void initState() {
     List list = widget.value.foodselect;
     listSelect = list.map((model) => ListOrder.fromJson(model)).toList();
+    print("ปริ้น : ");
+    print(jsonEncode(listSelect));
     getLocal();
     super.initState();
   }
@@ -74,7 +76,9 @@ class _OrderFoodState extends State<OrderFood> {
       "order_price": totalBalanceDB.toString(),
       "order_location": controlAddress.text,
       "order_point": controlAddressPoint.text,
-      "order_other": controlOther.text
+      "order_other": controlOther.text,
+      "list_order": jsonEncode(listSelect)
+      //"list_order": listSelect
     });
     Map map = {
       "username": logUser,
@@ -82,7 +86,8 @@ class _OrderFoodState extends State<OrderFood> {
       "order_price": totalBalanceDB.toString(),
       "order_location": controlAddress.text,
       "order_point": controlAddressPoint.text,
-      "order_other": controlOther.text
+      "order_other": controlOther.text,
+      "list_order": jsonEncode(listSelect)
     };
     print(map);
     var datauser = json.decode(response.body);
@@ -110,12 +115,6 @@ class _OrderFoodState extends State<OrderFood> {
           fontSize: 16.0,
         );
       });
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => MainPageList(),
-      //   ),
-      // );
     }
     return datauser;
   }
