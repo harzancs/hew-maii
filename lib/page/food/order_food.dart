@@ -393,7 +393,6 @@ class _OrderFoodState extends State<OrderFood> {
             RaisedButton(
               onPressed: () {
                 confirmOrder();
-                
               },
               color: Color(0xFFFF6F18),
               child: Text(
