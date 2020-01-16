@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hew_maii/model/font_style.dart';
-import 'package:hew_maii/page/driver/driver_order.dart';
+import 'package:hew_maii/page/driver/model/list_order_driver.dart';
+import 'package:hew_maii/server/server.dart';
+
+import 'package:http/http.dart' as http;
 
 class ListDriverPage extends StatefulWidget {
   @override
@@ -10,10 +15,17 @@ class ListDriverPage extends StatefulWidget {
 class _ListDriverPageState extends State<ListDriverPage> {
   bool _switchOn = false;
 
+  var listDriver = new List<ListDriver>();
+
   TextStyle textStyleStatus = TextStyle(
       fontFamily: FontStyles().fontFamily, fontSize: 16, color: Colors.white);
   TextStyle textStyleOnOff = TextStyle(
       fontFamily: FontStyles().fontFamily, fontSize: 30, color: Colors.white);
+// in Card
+  TextStyle textStyleOnTitle = TextStyle(
+      fontFamily: FontStyles().fontFamily, fontSize: 30, color: Colors.grey);
+      TextStyle textStyleOnUnderTitle = TextStyle(
+      fontFamily: FontStyles().fontFamily, fontSize: 16, color: Colors.black);
 
   Widget _widgetStatus(bool _switchOn) {
     if (_switchOn) {
@@ -23,26 +35,93 @@ class _ListDriverPageState extends State<ListDriverPage> {
     }
   }
 
-  Widget _widgetOnOff(bool _switchOn) {
-    if (!_switchOn) {
-      return Container(
-        child: Column(
-          children: <Widget>[
-            Icon(
-              Icons.layers_clear,
-              color: Colors.white,
-              size: 80,
-            ),
-            Text(
-              "ปิดรับงาน",
-              style: textStyleOnOff,
-            )
-          ],
-        ),
-      );
-    } else {
-      return ListOrder();
-    }
+  Widget _widgetOnOff() {
+    return Container(
+        height: MediaQuery.of(context).size.height * 0.8,
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(50),
+              ),
+              Icon(
+                Icons.layers_clear,
+                color: Colors.white,
+                size: 80,
+              ),
+              Text(
+                "ปิดรับงาน",
+                style: textStyleOnOff,
+              )
+            ],
+          ),
+        ));
+  }
+
+  Widget _widgetOnOn() {
+    getOrder();
+    return Container(
+        height: MediaQuery.of(context).size.height * 0.8,
+        width: MediaQuery.of(context).size.width * 0.9,
+        child: ListView.builder(
+          itemCount: listDriver.length,
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemBuilder: (content, index) {
+            return Container(
+              height: 100,
+              child: Card(
+                  child: InkWell(
+                onTap: () {},
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            " OD" + listDriver[index].order_id.toString(),
+                            style: textStyleOnTitle,
+                          ),
+                          Text(
+                            listDriver[index].order_price.toString() + "฿ ",
+                            style: textStyleOnTitle,
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Text(
+                            "  " + listDriver[index].res_name,
+                            style: textStyleOnUnderTitle,
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              )),
+            );
+          },
+        ));
+  }
+
+  Future<List> getOrder() async {
+    // print(response.body);
+    final response =
+        await http.post(Server().driverGetOrder, body: {"username": 'harzan'});
+    var datauser = json.decode(response.body);
+    print(response.body);
+    var status = "${datauser[0]['status']}";
+    if (status != 'false') {
+      setState(() {
+        print(response.body);
+        Iterable list_driver = json.decode(response.body);
+        listDriver =
+            list_driver.map((model) => ListDriver.fromJson(model)).toList();
+      });
+    } else {}
+    return datauser;
   }
 
   @override
@@ -114,18 +193,22 @@ class _ListDriverPageState extends State<ListDriverPage> {
                   ],
                 ),
               ),
-              // Padding(
-              //   padding: EdgeInsets.all(50),
-              // ),
               SingleChildScrollView(
                 child: Center(
-                  child: Column(
-                    children: <Widget>[
-                      _widgetOnOff(_switchOn),
-                    ],
-                  ),
+                  child: _switchOn ? _widgetOnOn() : _widgetOnOff(),
                 ),
               )
+              // Container(
+              //   height: MediaQuery.of(context).size.height * 0.8,
+              //   width: MediaQuery.of(context).size.width * 0.85,
+              //   child: SingleChildScrollView(
+              //     child: Column(
+              //       children: <Widget>[
+
+              //       ],
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         )),
