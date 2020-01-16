@@ -43,12 +43,16 @@ class _ListFoodPageState extends State<ListFoodPage> {
   readLocal() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final key = 'myLocal';
-    valueLocal = prefs.getString(key) ?? '';
+    valueLocal = prefs.getString(key);
     print('read Local : $valueLocal');
-    if (valueLocal?.isEmpty ?? true) {
-      _setLocation = false;
+    if (valueLocal == 'Null') {
+      setState(() {
+        _setLocation = false;
+      });
     } else {
-      _setLocation = true;
+      setState(() {
+        _setLocation = true;
+      });
       _getUsers();
     }
   }
@@ -134,8 +138,9 @@ class _ListFoodPageState extends State<ListFoodPage> {
                             listRes[index].timeClose.substring(0, 5) +
                             ' น. ',
                         style: TextStyle(
-                            fontFamily: FontStyles().fontFamily,
-                            fontSize: 16,),
+                          fontFamily: FontStyles().fontFamily,
+                          fontSize: 16,
+                        ),
                       )
                     ],
                   ),
@@ -242,7 +247,8 @@ class _ListFoodPageState extends State<ListFoodPage> {
               // ),
               SingleChildScrollView(
                 child: Center(
-                  child: _setLocation ? listRestaurent() : insertLocation(),
+                  child:
+                      _setLocation ? listRestaurent() : insertLocation(context),
                 ),
               )
             ],

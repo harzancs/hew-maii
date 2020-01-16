@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hew_maii/model/font_style.dart';
+import 'package:hew_maii/page/food/add_location.dart';
 
-Widget insertLocation() {
+Widget insertLocation(context) {
   return Container(
     child: Center(
         child: Column(
@@ -39,7 +40,13 @@ Widget insertLocation() {
                   shape: new RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(9.0),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddLocationInCus(),
+                        ));
+                  },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[

@@ -49,7 +49,7 @@ class _SignInState extends State<SignIn> {
         );
       });
     } else {
-      var textLocation = "${datauser[0]['cus_location']}";
+      var textLocation = "${datauser[0]['location_id']}";
       setState(() {
         Fluttertoast.showToast(
           msg: "สวัสดี คุณ${datauser[0]['cus_name']} !!!",
@@ -267,6 +267,9 @@ class _SignInState extends State<SignIn> {
   Future<String> _saveLocal(String local) async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'myLocal';
+    if (local?.isEmpty ?? true) {
+      local = "Null";
+    }
     final value = local;
     prefs.setString(key, value);
     print('saved $value');
