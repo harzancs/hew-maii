@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hew_maii/model/font_style.dart';
 import 'package:hew_maii/model/link_image.dart';
 import 'package:hew_maii/page/food/insert_location.dart';
@@ -16,12 +17,6 @@ class ListFoodPage extends StatefulWidget {
   _ListFoodPageState createState() => _ListFoodPageState();
 }
 
-class API {
-  static Future getUsers() {
-    return http.get(Server().addressListRestaurent);
-  }
-}
-
 class DataRes {
   const DataRes({this.id, this.nameRes, this.imageRes});
 
@@ -33,9 +28,20 @@ class _ListFoodPageState extends State<ListFoodPage> {
 
   bool _setLocation = false;
   var valueLocal;
+  bool statusBoolRes = false;
+  var res_id = '', local_id = '';
+
+  _getDataLocal() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      res_id = prefs.getString('myUsername');
+      local_id = prefs.getString('myLocal_id');
+    });
+  }
 
   @override
   void initState() {
+    _getDataLocal();
     super.initState();
     readLocal();
   }
@@ -57,14 +63,31 @@ class _ListFoodPageState extends State<ListFoodPage> {
     }
   }
 
-  _getUsers() {
-    API.getUsers().then((response) {
-      setState(() {
-        print(response.body);
-        Iterable list = json.decode(response.body);
-        listRes = list.map((model) => ListRes.fromJson(model)).toList();
-      });
+  _getUsers() async {
+    final response = await http.post(Server().addressListRestaurent,
+        body: {"ID_LOCATION": local_id});
+    setState(() {
+      print(response.body);
+      Iterable list = json.decode(response.body);
+      listRes = list.map((model) => ListRes.fromJson(model)).toList();
     });
+  }
+
+  Widget _statusRes(String numStatus) {
+    if (numStatus == '0') {
+      return Text("ปิด ",
+          style: TextStyle(
+              fontFamily: FontStyles().fontFamily,
+              fontSize: 18,
+              color: Colors.red));
+    } else if (numStatus == '1') {
+      statusBoolRes = true;
+      return Text("เปิด ",
+          style: TextStyle(
+              fontFamily: FontStyles().fontFamily,
+              fontSize: 18,
+              color: Color(0xFFF38C61F)));
+    }
   }
 
   Widget listRestaurent() {
@@ -79,16 +102,29 @@ class _ListFoodPageState extends State<ListFoodPage> {
           return Card(
               child: InkWell(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ListMenuFood(
-                      value: DataRes(
-                          id: listRes[index].id,
-                          nameRes: listRes[index].name,
-                          imageRes: listRes[index].image),
-                    ),
-                  ));
+              if (listRes[index].status.toString() == '1') {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ListMenuFood(
+                        value: DataRes(
+                            id: listRes[index].id,
+                            nameRes: listRes[index].name,
+                            imageRes: listRes[index].image),
+                      ),
+                    ));
+              } else {
+                setState(() {
+                  Fluttertoast.showToast(
+                    msg: "ร้าน '" + listRes[index].name + "' ปิดอยู่ !",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: Colors.white,
+                    textColor: Colors.orange,
+                    fontSize: 16.0,
+                  );
+                });
+              }
             },
             child: Container(
               height: 150,
@@ -115,13 +151,7 @@ class _ListFoodPageState extends State<ListFoodPage> {
                         style: TextStyle(
                             fontFamily: FontStyles().fontFamily, fontSize: 18),
                       ),
-                      Text(
-                        "เปิด ",
-                        style: TextStyle(
-                            fontFamily: FontStyles().fontFamily,
-                            fontSize: 18,
-                            color: Color(0xFFF38C61F)),
-                      )
+                      _statusRes(listRes[index].status.toString()),
                     ],
                   ),
                   Row(
@@ -233,7 +263,7 @@ class _ListFoodPageState extends State<ListFoodPage> {
                       padding: EdgeInsets.all(9),
                     ),
                     Text(
-                      _setLocation ? "ร้านไกล้คุณ : $valueLocal " : "",
+                      _setLocation ? "เขต : $valueLocal " : "",
                       style: TextStyle(
                           fontFamily: FontStyles().fontFamily,
                           fontSize: 20,

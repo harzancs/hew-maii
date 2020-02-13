@@ -61,7 +61,7 @@ class _SignInState extends State<SignIn> {
         );
         _saveUser(controlUsername.text);
         _savePass(controlPassword.text);
-        _saveLocal(textLocation);
+        _saveLocal(textLocation,datauser[0]['location_iid'].toString());
         _saveName(datauser[0]['cus_name']);
         _saveLastname(datauser[0]['cus_lastname']);
         _savePhone(datauser[0]['cus_phone']);
@@ -264,14 +264,16 @@ class _SignInState extends State<SignIn> {
     print('saved $value');
   }
 
-  Future<String> _saveLocal(String local) async {
+  Future<String> _saveLocal(String local,String local_id) async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'myLocal';
     if (local?.isEmpty ?? true) {
       local = "Null";
+      local_id = "Null";
     }
     final value = local;
     prefs.setString(key, value);
+    prefs.setString('myLocal_id', local_id);
     print('saved $value');
   }
 

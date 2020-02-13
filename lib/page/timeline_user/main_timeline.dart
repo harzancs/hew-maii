@@ -10,35 +10,8 @@ class MainTimeLine extends StatefulWidget {
 class _MainTimeLineState extends State<MainTimeLine> {
   int _currentStep = 0;
 
-  List<Step> _mySteps() {
-    List<Step> _steps = [
-      Step(
-        title: Text("Step 1"),
-        content: Container(
-          child: Column(
-            children: <Widget>[Text("ชื่อคนส่ง :")],
-          ),
-        ),
-        isActive: _currentStep >= 0,
-      ),
-      Step(
-        title: Text("Step 2"),
-        content: TextField(),
-        isActive: _currentStep >= 1,
-      ),
-      Step(
-        title: Text("Step 3"),
-        content: TextField(),
-        isActive: _currentStep >= 2,
-      ),
-      Step(
-        title: Text("Step 4"),
-        content: TextField(),
-        isActive: _currentStep >= 3,
-      )
-    ];
-    return _steps;
-  }
+  final TextStyle textTitle =
+      new TextStyle(fontFamily: FontStyles().fontFamily, fontSize: 18);
 
   @override
   Widget build(BuildContext context) {
@@ -70,40 +43,411 @@ class _MainTimeLineState extends State<MainTimeLine> {
           image: DecorationImage(
               image: AssetImage('assets/bg/bg_2.jpg'), fit: BoxFit.cover),
         ),
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(0),
-              ),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(10),
-              ),
-              Container(
-                color: Colors.white,
-                width: MediaQuery.of(context).size.width * 0.87,
-                child: Column(
-                  children: <Widget>[
-                    Stepper(
-                      steps: _mySteps(),
-                      currentStep: this._currentStep,
-                      onStepTapped: (step) {
-                        setState(() {
-                          this._currentStep = step;
-                        });
-                      },
-                    )
-                  ],
-                ),
-              ),
-            ],
+        child: SingleChildScrollView(
+          child: Center(
+            child: Container(
+              child: Column(children: <Widget>[
+                Padding(padding: EdgeInsets.all(10)),
+                Card(
+                    child: Container(
+                        width: MediaQuery.of(context).size.width * .85,
+                        child: Column(children: <Widget>[
+                          Container(
+                              width: MediaQuery.of(context).size.width * .77,
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(padding: EdgeInsets.all(5)),
+                                    Row(
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          backgroundColor: Color(0xFFFFF6F18),
+                                          child: Icon(
+                                            Icons.assignment,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(children: <Widget>[
+                                          Text(
+                                            "ส่งรายการเรียบร้อย",
+                                            style: textTitle,
+                                          )
+                                        ])
+                                      ],
+                                    ),
+                                    Divider(
+                                      color: Color(0xFFFFF6F18),
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          backgroundColor: Color(0xFFFFF6F18),
+                                          child: Icon(
+                                            Icons.motorcycle,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                "คนขับรถรับรายการ",
+                                                style: textTitle,
+                                              ),
+                                              Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Text("ชื่อ : "),
+                                                    Text("ฮัรซาน ชัชวาลย์")
+                                                  ]),
+                                              Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Text("รถ : "),
+                                                    Text("ฮัรซาน ชัชวาลย์")
+                                                  ])
+                                            ])
+                                      ],
+                                    ),
+                                    Divider(
+                                      color: Color(0xFFFFF6F18),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          backgroundColor: Color(0xFFFFF6F18),
+                                          child: Icon(
+                                            Icons.store,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(children: <Widget>[
+                                          Text(
+                                            "ร้านค้ารับรายการและเตรียมอาหาร",
+                                            style: textTitle,
+                                          ),
+                                        ])
+                                      ],
+                                    ),
+                                    Divider(
+                                      color: Color(0xFFFFF6F18),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          backgroundColor: Color(0xFFFFF6F18),
+                                          child: Icon(
+                                            Icons.shopping_basket,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(children: <Widget>[
+                                          Text(
+                                            "คนขับรับอาหาร",
+                                            style: textTitle,
+                                          ),
+                                        ])
+                                      ],
+                                    ),
+                                    Divider(
+                                      color: Color(0xFFFFF6F18),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          backgroundColor: Color(0xFFFFF6F18),
+                                          child: Icon(
+                                            Icons.map,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(children: <Widget>[
+                                          Text(
+                                            "กำลังจัดส่งอาหาร",
+                                            style: textTitle,
+                                          ),
+                                        ])
+                                      ],
+                                    ),
+                                    Divider(
+                                      color: Color(0xFFFFF6F18),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          backgroundColor: Color(0xFFFFF6F18),
+                                          child: Icon(
+                                            Icons.pin_drop,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(children: <Widget>[
+                                          Text(
+                                            "ถึงที่หมายของท่าน",
+                                            style: textTitle,
+                                          )
+                                        ])
+                                      ],
+                                    ),
+                                    Divider(
+                                      color: Color(0xFFFFF6F18),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          backgroundColor: Colors.green,
+                                          child: Icon(
+                                            Icons.done,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(children: <Widget>[
+                                          Text(
+                                            "ได้รับอาหารเรียบร้อยแล้ว",
+                                            style: textTitle,
+                                          ),
+                                        ])
+                                      ],
+                                    ),
+                                    Padding(padding: EdgeInsets.all(5))
+                                  ]))
+                        ]))),
+                Card(
+                    child: Container(
+                        width: MediaQuery.of(context).size.width * .85,
+                        child: Column(children: <Widget>[
+                          Container(
+                              width: MediaQuery.of(context).size.width * .77,
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(padding: EdgeInsets.all(5)),
+                                    Row(
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          backgroundColor: Color(0xFFFFF6F18),
+                                          child: Icon(
+                                            Icons.assignment,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(children: <Widget>[
+                                          Text(
+                                            "ส่งรายการเรียบร้อย",
+                                            style: textTitle,
+                                          )
+                                        ])
+                                      ],
+                                    ),
+                                    Divider(
+                                      color: Color(0xFFFFF6F18),
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          backgroundColor: Color(0xFFFFF6F18),
+                                          child: Icon(
+                                            Icons.motorcycle,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                "คนขับรถรับรายการ",
+                                                style: textTitle,
+                                              ),
+                                              Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Text("ชื่อ : "),
+                                                    Text("ฮัรซาน ชัชวาลย์")
+                                                  ]),
+                                              Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Text("รถ : "),
+                                                    Text("ฮัรซาน ชัชวาลย์")
+                                                  ])
+                                            ])
+                                      ],
+                                    ),
+                                    Divider(
+                                      color: Color(0xFFFFF6F18),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          backgroundColor: Color(0xFFFFF6F18),
+                                          child: Icon(
+                                            Icons.store,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(children: <Widget>[
+                                          Text(
+                                            "ร้านค้ารับรายการและเตรียมอาหาร",
+                                            style: textTitle,
+                                          ),
+                                        ])
+                                      ],
+                                    ),
+                                    Divider(
+                                      color: Color(0xFFFFF6F18),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          backgroundColor: Color(0xFFFFF6F18),
+                                          child: Icon(
+                                            Icons.shopping_basket,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(children: <Widget>[
+                                          Text(
+                                            "คนขับรับอาหาร",
+                                            style: textTitle,
+                                          ),
+                                        ])
+                                      ],
+                                    ),
+                                    Divider(
+                                      color: Color(0xFFFFF6F18),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          backgroundColor: Color(0xFFFFF6F18),
+                                          child: Icon(
+                                            Icons.map,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(children: <Widget>[
+                                          Text(
+                                            "กำลังจัดส่งอาหาร",
+                                            style: textTitle,
+                                          ),
+                                        ])
+                                      ],
+                                    ),
+                                    Divider(
+                                      color: Color(0xFFFFF6F18),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          backgroundColor: Color(0xFFFFF6F18),
+                                          child: Icon(
+                                            Icons.pin_drop,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(children: <Widget>[
+                                          Text(
+                                            "ถึงที่หมายของท่าน",
+                                            style: textTitle,
+                                          )
+                                        ])
+                                      ],
+                                    ),
+                                    Divider(
+                                      color: Color(0xFFFFF6F18),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          backgroundColor: Colors.green,
+                                          child: Icon(
+                                            Icons.done,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(children: <Widget>[
+                                          Text(
+                                            "ได้รับอาหารเรียบร้อยแล้ว",
+                                            style: textTitle,
+                                          ),
+                                        ])
+                                      ],
+                                    ),
+                                    Padding(padding: EdgeInsets.all(5))
+                                  ]))
+                        ])))
+              ]),
+            ),
           ),
         ),
       ),

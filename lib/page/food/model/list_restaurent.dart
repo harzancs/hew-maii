@@ -4,14 +4,18 @@ class ListRes {
   String image;
   String timeOpen;
   String timeClose;
+  String status;
+  String local;
 
-  ListRes(
-      String id, String name, String image, String timeOpen, String timeClose) {
+  ListRes(String id, String name, String image, String timeOpen,
+      String timeClose, String status, String local) {
     this.id = id;
     this.name = name;
     this.image = image;
     this.timeOpen = timeOpen;
     this.timeClose = timeClose;
+    this.status = status;
+    this.local = local;
   }
 
   ListRes.fromJson(Map json)
@@ -19,7 +23,9 @@ class ListRes {
         name = json['res_name'],
         image = json['res_image'],
         timeOpen = json['res_time_open'],
-        timeClose = json['res_time_close'];
+        timeClose = json['res_time_close'],
+        status = json['res_status'],
+        local = json['location_id'];
 
   Map toJson() {
     return {
@@ -27,7 +33,9 @@ class ListRes {
       'name': name,
       'image': image,
       'timeOpen': timeOpen,
-      'timeClose': timeClose
+      'timeClose': timeClose,
+      'status': status,
+      'local': local
     };
   }
 }

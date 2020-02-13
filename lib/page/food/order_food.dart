@@ -105,6 +105,11 @@ class _OrderFoodState extends State<OrderFood> {
         );
       });
     } else if (status == 'true') {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MainTimeLine(),
+          ));
       setState(() {
         Fluttertoast.showToast(
           msg: "รอรับอาหารได้เลย !!!",

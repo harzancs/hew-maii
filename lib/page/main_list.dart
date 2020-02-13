@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hew_maii/model/font_style.dart';
 import 'package:hew_maii/page/account/account_main.dart';
 import 'package:hew_maii/page/driver/driver_main.dart';
@@ -25,9 +26,72 @@ class _MainPageListState extends State<MainPageList> {
   void initState() {
     super.initState();
   }
+
+  Future<bool> _onWillPop() async {
+    bool switchControl;
+    if (switchControl == true) {
+      return (await showDialog(
+            context: context,
+            builder: (context) => new AlertDialog(
+              title: new Text(
+                'ไม่สามารถออกจากแอพได้ !',
+                style: TextStyle(fontFamily: FontStyles().fontFamily),
+              ),
+              content: new Text(
+                'หากคุณต้องการออกจากแอพนี้ คุณจำเป็นต้อง " ปิดร้าน " เสียก่อน',
+                style: TextStyle(fontFamily: FontStyles().fontFamily),
+              ),
+              actions: <Widget>[
+                new FlatButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: new Text(
+                    'ปิด',
+                    style: TextStyle(fontFamily: FontStyles().fontFamily),
+                  ),
+                ),
+              ],
+            ),
+          )) ??
+          false;
+    } else {
+      return (await showDialog(
+            context: context,
+            builder: (context) => new AlertDialog(
+              title: new Text(
+                'แน่ใจหรือไม่ ?',
+                style: TextStyle(fontFamily: FontStyles().fontFamily),
+              ),
+              content: new Text(
+                'คุณต้องการออกจากแอพนี้',
+                style: TextStyle(fontFamily: FontStyles().fontFamily),
+              ),
+              actions: <Widget>[
+                new FlatButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: new Text(
+                    'ไม่',
+                    style: TextStyle(fontFamily: FontStyles().fontFamily),
+                  ),
+                ),
+                new FlatButton(
+                  onPressed: () => SystemNavigator.pop(),
+                  child: new Text(
+                    'ใช่',
+                    style: TextStyle(fontFamily: FontStyles().fontFamily),
+                  ),
+                ),
+              ],
+            ),
+          )) ??
+          false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: _onWillPop,
+    child: Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Container(
         height: 1000,
@@ -65,7 +129,7 @@ class _MainPageListState extends State<MainPageList> {
         fixedColor: Color(0xFFFF6F18),
         onTap: onItemTapped,
       ),
-    );
+    ));
   }
 
   void onItemTapped(int index) {
