@@ -63,7 +63,6 @@ class _MainTimeLineState extends State<MainTimeLine> {
         _setStatusDis(numStatus);
       });
     }
-
     return datauser;
   }
 

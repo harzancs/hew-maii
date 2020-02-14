@@ -17,6 +17,8 @@ class Server {
   //----- TimeLine
   String timeLineOrderDeatil =
       "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiGetMyOrderDetail.php";
+  String getAllOrder =
+      "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiGetMyOrder.php";
   String timeLineOrderStatus =
       "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiGetTimelineOrder.php";
   Server() : super();
