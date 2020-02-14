@@ -7,6 +7,7 @@ import 'package:hew_maii/model/link_image.dart';
 import 'package:hew_maii/page/food/insert_location.dart';
 import 'package:hew_maii/page/food/list_menu_food.dart';
 import 'package:hew_maii/page/food/model/list_restaurent.dart';
+import 'package:hew_maii/page/inform/inform_main.dart';
 import 'package:hew_maii/server/server.dart';
 
 import 'package:http/http.dart' as http;
@@ -64,8 +65,8 @@ class _ListFoodPageState extends State<ListFoodPage> {
   }
 
   _getUsers() async {
-    final response = await http.post(Server().addressListRestaurent,
-        body: {"ID_LOCATION": local_id});
+    final response = await http
+        .post(Server().addressListRestaurent, body: {"ID_LOCATION": local_id});
     setState(() {
       print(response.body);
       Iterable list = json.decode(response.body);
@@ -92,7 +93,7 @@ class _ListFoodPageState extends State<ListFoodPage> {
 
   Widget listRestaurent() {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.76,
+      height: MediaQuery.of(context).size.height * 0.74,
       width: MediaQuery.of(context).size.width * 0.87,
       child: ListView.builder(
         scrollDirection: Axis.vertical,
@@ -188,103 +189,119 @@ class _ListFoodPageState extends State<ListFoodPage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Container(
-        height: 1000,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/bg/bg_2.jpg'), fit: BoxFit.cover),
-        ),
-        child: Center(
-            child: Container(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(15),
-              ),
-              Container(
-                height: 40,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
+          height: 1000,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/bg/bg_2.jpg'), fit: BoxFit.cover),
+          ),
+          child: SingleChildScrollView(
+            child: Center(
+                child: Container(
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(15),
+                  ),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.all(9),
+                            ),
+                            Icon(
+                              Icons.local_dining,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(5),
+                            ),
+                            Text(
+                              "หิวมั๊ย",
+                              style: TextStyle(
+                                  fontFamily: FontStyles().fontFamily,
+                                  fontSize: 28,
+                                  color: Colors.white),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            // SizedBox(
+                            //     width: 30,
+                            //     child: FloatingActionButton(
+                            //       onPressed: () {},
+                            //       heroTag: "btn1",
+                            //       backgroundColor: Colors.white.withOpacity(0.3),
+                            //       child: Icon(
+                            //         Icons.search,
+                            //         color: Colors.white,
+                            //         size: 20,
+                            //       ),
+                            //     )),
+                            Padding(
+                              padding: EdgeInsets.all(5),
+                            ),
+                            SizedBox(
+                                width: 30,
+                                child: FloatingActionButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => MainInform(),
+                                        ));
+                                  },
+                                  heroTag: "btn2",
+                                  backgroundColor:
+                                      Colors.white.withOpacity(0.3),
+                                  child: Icon(
+                                    Icons.notifications,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                )),
+                            Padding(
+                              padding: EdgeInsets.all(5),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Row(
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.all(9),
                         ),
                         Text(
-                          "หิวมั๊ย",
+                          _setLocation ? "เขต : $valueLocal " : "",
                           style: TextStyle(
                               fontFamily: FontStyles().fontFamily,
-                              fontSize: 28,
+                              fontSize: 20,
                               color: Colors.white),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        SizedBox(
-                            width: 30,
-                            child: FloatingActionButton(
-                              onPressed: () {},
-                              heroTag: "btn1",
-                              backgroundColor: Colors.white.withOpacity(0.3),
-                              child: Icon(
-                                Icons.search,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                            )),
-                        Padding(
-                          padding: EdgeInsets.all(5),
-                        ),
-                        SizedBox(
-                            width: 30,
-                            child: FloatingActionButton(
-                              onPressed: () {},
-                              heroTag: "btn2",
-                              backgroundColor: Colors.white.withOpacity(0.3),
-                              child: Icon(
-                                Icons.notifications,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                            )),
-                        Padding(
-                          padding: EdgeInsets.all(5),
                         )
                       ],
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(9),
                     ),
-                    Text(
-                      _setLocation ? "เขต : $valueLocal " : "",
-                      style: TextStyle(
-                          fontFamily: FontStyles().fontFamily,
-                          fontSize: 20,
-                          color: Colors.white),
-                    )
-                  ],
-                ),
+                  ),
+                  // Padding(
+                  //   padding: EdgeInsets.all(50),
+                  // ),
+                  SingleChildScrollView(
+                    child: Center(
+                      child: _setLocation
+                          ? listRestaurent()
+                          : insertLocation(context),
+                    ),
+                  )
+                ],
               ),
-              // Padding(
-              //   padding: EdgeInsets.all(50),
-              // ),
-              SingleChildScrollView(
-                child: Center(
-                  child:
-                      _setLocation ? listRestaurent() : insertLocation(context),
-                ),
-              )
-            ],
-          ),
-        )),
-      ),
+            )),
+          )),
     );
   }
 }

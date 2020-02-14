@@ -93,6 +93,7 @@ class _OrderFoodState extends State<OrderFood> {
     var datauser = json.decode(response.body);
     print(response.body);
     var status = "${datauser[0]['status']}";
+    var idOrder = "${datauser[0]['idOrder']}";
     if (status == 'false') {
       setState(() {
         Fluttertoast.showToast(
@@ -104,11 +105,13 @@ class _OrderFoodState extends State<OrderFood> {
           fontSize: 16.0,
         );
       });
-    } else if (status == 'true') {
+    } else if (status != 'false') {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MainTimeLine(),
+            builder: (context) => MainTimeLine(
+              idOrder: idOrder.toString()
+            ),
           ));
       setState(() {
         Fluttertoast.showToast(

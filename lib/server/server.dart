@@ -13,5 +13,11 @@ class Server {
   //----- Driver
   String driverGetOrder =
       "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/api_driver/apiGetOrderDriver.php";
+
+  //----- TimeLine
+  String timeLineOrderDeatil =
+      "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiGetMyOrderDetail.php";
+  String timeLineOrderStatus =
+      "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiGetTimelineOrder.php";
   Server() : super();
 }
