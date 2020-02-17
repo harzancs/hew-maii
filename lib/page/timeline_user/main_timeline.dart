@@ -1,15 +1,14 @@
 import 'dart:convert';
 
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hew_maii/model/font_style.dart';
 import 'package:hew_maii/page/inform/inform_main.dart';
 import 'package:hew_maii/page/main_list.dart';
-import 'package:hew_maii/page/timeline_user/camera_scanqrcode.dart';
 import 'package:hew_maii/server/server.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MainTimeLine extends StatefulWidget {
   final String idOrder;
@@ -42,7 +41,9 @@ class _MainTimeLineState extends State<MainTimeLine> {
   bool _hideStatusQRcode = false;
   //************ */
   var car_type = '', car_num = '';
-  var name_driver = '', lastnum_driver = '';
+  var name_driver = '', lastnum_driver = '', order_price = '', driver_id = '';
+  var id_driver = '', id_order = '';
+  List lt = [];
 
   @override
   void initState() {
@@ -51,7 +52,6 @@ class _MainTimeLineState extends State<MainTimeLine> {
       order_id = widget.idOrder;
       getMyOrderDetail();
     });
-
     super.initState();
   }
 
@@ -72,9 +72,129 @@ class _MainTimeLineState extends State<MainTimeLine> {
         car_num = "${datauser[0]['car_number']}";
         name_driver = "${datauser[0]['cus_name']}";
         lastnum_driver = "${datauser[0]['cus_lastname']}";
+        order_price = "${datauser[0]['order_price']}";
+        driver_id = "${datauser[0]['driver_id']}";
       });
     }
     return datauser;
+  }
+
+  Future<List> getReceiveFood(String id_driver, String id_order) async {
+    // print(response.body);
+    final response = await http.post(Server().receiveFood,
+        body: {"idOrder": id_order, "idDriver": id_driver});
+    var datauser = json.decode(response.body);
+    print("GET STATUS => " + response.body);
+    String txtstatus;
+    setState(() {
+      txtstatus = "${datauser[0]['status']}";
+    });
+    if (txtstatus != 'false') {
+      _showDialogCorrect();
+      setState(() {
+        numStatus = 7;
+        _setStatusDis(numStatus);
+      });
+    } else {
+      _showDialogIncorrect();
+    }
+    return datauser;
+  }
+
+  void _showDialogCorrect() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Row(children: <Widget>[
+            Icon(
+              Icons.done_all,
+              size: 30,
+              color: Colors.green,
+            ),
+            Text(
+              " เรียบร้อย",
+              style: TextStyle(
+                  fontFamily: FontStyles().fontFamily,
+                  fontSize: 20,
+                  color: Colors.black),
+            )
+          ]),
+          content: Text(
+              "รับอาหารและจ่ายเงิน " + order_price + " บาท\n(รวมค่าส่ง 30 บาท)",
+              style: TextStyle(
+                  fontFamily: FontStyles().fontFamily,
+                  fontSize: 16,
+                  color: Colors.black)),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            RaisedButton(
+              color: Colors.redAccent,
+              child: new Text(
+                "ปิด",
+                style: TextStyle(
+                    fontFamily: FontStyles().fontFamily,
+                    fontSize: 14,
+                    color: Colors.white),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDialogIncorrect() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Row(children: <Widget>[
+            Icon(
+              Icons.close,
+              size: 30,
+              color: Colors.red,
+            ),
+            Text(
+              " ไม่ถูกต้อง",
+              style: TextStyle(
+                  fontFamily: FontStyles().fontFamily,
+                  fontSize: 20,
+                  color: Colors.black),
+            )
+          ]),
+          content: Text(
+              "กรุณาสอบถามข้อมูลอาหารและข้อมูลผู้ส่ง ว่าถูกต้องตามข้อมูลบนไทม์ไลน์นี้หรือไม่",
+              style: TextStyle(
+                  fontFamily: FontStyles().fontFamily,
+                  fontSize: 16,
+                  color: Colors.black)),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            RaisedButton(
+              color: Colors.redAccent,
+              child: new Text(
+                "ปิด",
+                style: TextStyle(
+                    fontFamily: FontStyles().fontFamily,
+                    fontSize: 14,
+                    color: Colors.white),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   _setStatusDis(int numStatus) {
@@ -105,6 +225,7 @@ class _MainTimeLineState extends State<MainTimeLine> {
     }
     if (numStatus >= 7 && numStatus < 8) {
       setState(() {
+        _hideStatusQRcode = false;
         _hideStatus7 = true;
       });
     }
@@ -119,6 +240,8 @@ class _MainTimeLineState extends State<MainTimeLine> {
       });
     }
   }
+
+  String barcode = "";
 
   @override
   Widget build(BuildContext context) {
@@ -226,44 +349,72 @@ class _MainTimeLineState extends State<MainTimeLine> {
                                                   "คนขับรถรับรายการ",
                                                   style: textTitle,
                                                 ),
-                                                Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: <Widget>[
-                                                      Text(
-                                                        "ชื่อ : ",
-                                                        style: textTitleDetail,
-                                                      ),
-                                                      Text(
-                                                        "คุณ" +
-                                                            name_driver +
-                                                            " " +
-                                                            lastnum_driver,
-                                                        style: textDetail,
-                                                      )
-                                                    ]),
-                                                Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: <Widget>[
-                                                      Text(
-                                                        "รถ : ",
-                                                        style: textTitleDetail,
-                                                      ),
-                                                      Text(
-                                                        "" +
-                                                            car_type +
-                                                            " " +
-                                                            car_num,
-                                                        style: textDetail,
-                                                      )
-                                                    ])
+                                                Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            .6,
+                                                    child:
+                                                        SingleChildScrollView(
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: <
+                                                                    Widget>[
+                                                                  Row(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
+                                                                      children: <
+                                                                          Widget>[
+                                                                        Text(
+                                                                          "ชื่อ : ",
+                                                                          style:
+                                                                              textTitleDetail,
+                                                                        ),
+                                                                        Text(
+                                                                          "คุณ" +
+                                                                              name_driver +
+                                                                              " " +
+                                                                              lastnum_driver,
+                                                                          style:
+                                                                              textDetail,
+                                                                        )
+                                                                      ]),
+                                                                  Row(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
+                                                                      children: <
+                                                                          Widget>[
+                                                                        Text(
+                                                                          "รถ : ",
+                                                                          style:
+                                                                              textTitleDetail,
+                                                                        ),
+                                                                        Text(
+                                                                          "" +
+                                                                              car_type +
+                                                                              " " +
+                                                                              car_num,
+                                                                          style:
+                                                                              textDetail,
+                                                                        )
+                                                                      ])
+                                                                ]))),
                                               ])
                                         ],
                                       ),
@@ -293,7 +444,7 @@ class _MainTimeLineState extends State<MainTimeLine> {
                                               ),
                                               Column(children: <Widget>[
                                                 Text(
-                                                  "ร้านค้ารับรายการและเตรียมอาหาร",
+                                                  "ร้านค้ารับและเตรียมอาหาร",
                                                   style: textTitle,
                                                 ),
                                               ])
@@ -466,13 +617,7 @@ class _MainTimeLineState extends State<MainTimeLine> {
                       visible: _hideStatusQRcode,
                       child: Card(
                         child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => UserScanQrCode(),
-                                ));
-                          },
+                          onTap: scan,
                           child: Container(
                             width: MediaQuery.of(context).size.width * .85,
                             child: Column(
@@ -511,5 +656,32 @@ class _MainTimeLineState extends State<MainTimeLine> {
         MaterialPageRoute(
           builder: (context) => MainInform(),
         ));
+  }
+
+  Future scan() async {
+    try {
+      String barcode = await BarcodeScanner.scan();
+      setState(() {
+        this.barcode = barcode;
+        lt = barcode.split(",");
+        id_driver = lt[0];
+        id_order = lt[1];
+        if (driver_id == id_driver && order_id == id_order) {
+          getReceiveFood(id_driver, id_order);
+        } else {
+          _showDialogIncorrect();
+        }
+      });
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.CameraAccessDenied) {
+        // The user did not grant the camera permission.
+      } else {
+        // Unknown error.
+      }
+    } on FormatException {
+      // User returned using the "back"-button before scanning anything.
+    } catch (e) {
+      // Unknown error.
+    }
   }
 }

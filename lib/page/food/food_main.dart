@@ -67,11 +67,17 @@ class _ListFoodPageState extends State<ListFoodPage> {
   _getUsers() async {
     final response = await http
         .post(Server().addressListRestaurent, body: {"ID_LOCATION": local_id});
-    setState(() {
-      print(response.body);
-      Iterable list = json.decode(response.body);
-      listRes = list.map((model) => ListRes.fromJson(model)).toList();
-    });
+
+    var datauser = json.decode(response.body);
+    var status = "${datauser[0]['status']}";
+    print(response.body);
+
+    if (status != 'false') {
+      setState(() {
+        Iterable list = json.decode(response.body);
+        listRes = list.map((model) => ListRes.fromJson(model)).toList();
+      });
+    }
   }
 
   Widget _statusRes(String numStatus) {

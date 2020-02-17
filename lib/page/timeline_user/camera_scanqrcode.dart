@@ -45,6 +45,7 @@ class _UserScanQrCodeState extends State<UserScanQrCode> {
       String barcode = await BarcodeScanner.scan();
       setState(() {
         this.barcode = barcode;
+        Navigator.of(context).pop();
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
@@ -58,4 +59,9 @@ class _UserScanQrCodeState extends State<UserScanQrCode> {
       // Unknown error.
     }
   }
+
+  
+
+
+
 }

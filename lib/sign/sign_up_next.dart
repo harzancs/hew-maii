@@ -6,8 +6,10 @@ import 'package:hew_maii/model/font_style.dart';
 import 'package:hew_maii/page/main_list.dart';
 import 'package:hew_maii/server/server.dart';
 import 'package:hew_maii/sign/sign_up.dart';
+import 'package:hew_maii/sign/sign_up_loader.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpNext extends StatefulWidget {
   final DataText value;
@@ -48,20 +50,11 @@ class _SignUpNextState extends State<SignUpNext> {
         );
       });
     } else if (status == 'true') {
-      setState(() {
-        Fluttertoast.showToast(
-          msg: "ยินดีต้อนรับ คุณ" + widget.value.name + " !!!",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.white,
-          textColor: Colors.orange,
-          fontSize: 16.0,
-        );
-      });
+      _saveUser(controlUsername.text,controlPassword.text);
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => MainPageList(),
+          builder: (context) => SignUpLoaderPage(),
         ),
       );
     }
@@ -269,8 +262,8 @@ class _SignUpNextState extends State<SignUpNext> {
                                       color: Colors.green,
                                       child: Text(
                                         _isLoading
-                                            ? 'กำลังลงทะเบียน..'
-                                            : 'ลงทะเบียน',
+                                            ? 'ลงทะเบียน'
+                                            : 'กำลังลงทะเบียน..',
                                         style: TextStyle(
                                             fontFamily: FontStyles().fontFamily,
                                             fontSize: 15.0),
@@ -305,5 +298,10 @@ class _SignUpNextState extends State<SignUpNext> {
       "EMAIL": widget.value.email,
       "PHONE": widget.value.phone
     };
+  }
+  _saveUser(String username,String password) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('myUsername',username);
+    prefs.setString('myPassword',password);
   }
 }

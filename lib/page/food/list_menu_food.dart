@@ -10,18 +10,6 @@ import 'package:hew_maii/server/server.dart';
 
 import 'package:http/http.dart' as http;
 
-// Future<bool> setStringList(String key, List<String> value) async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   List<String> myList = (prefs.getStringList('name') ?? List<String>());
-//   await prefs.setStringList('name', myList);
-// }
-
-// Future<String> getFoodPreference() async {
-//   SharedPreferences perfs = await SharedPreferences.getInstance();
-//   String name = perfs.getString("name");
-//   return name;
-// }
-
 class ListMenuFood extends StatefulWidget {
   final DataRes value;
   ListMenuFood({Key key, this.value}) : super(key: key);
