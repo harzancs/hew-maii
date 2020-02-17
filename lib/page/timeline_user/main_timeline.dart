@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:hew_maii/model/font_style.dart';
 import 'package:hew_maii/page/inform/inform_main.dart';
 import 'package:hew_maii/page/main_list.dart';
+import 'package:hew_maii/page/timeline_user/camera_scanqrcode.dart';
 import 'package:hew_maii/server/server.dart';
 
 import 'package:http/http.dart' as http;
@@ -465,7 +466,13 @@ class _MainTimeLineState extends State<MainTimeLine> {
                       visible: _hideStatusQRcode,
                       child: Card(
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => UserScanQrCode(),
+                                ));
+                          },
                           child: Container(
                             width: MediaQuery.of(context).size.width * .85,
                             child: Column(
