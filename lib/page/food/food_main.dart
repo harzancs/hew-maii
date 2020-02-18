@@ -19,9 +19,9 @@ class ListFoodPage extends StatefulWidget {
 }
 
 class DataRes {
-  const DataRes({this.id, this.nameRes, this.imageRes});
+  const DataRes({this.id, this.nameRes, this.imageRes,this.local_map});
 
-  final String id, nameRes, imageRes;
+  final String id, nameRes, imageRes, local_map;
 }
 
 class _ListFoodPageState extends State<ListFoodPage> {
@@ -117,7 +117,8 @@ class _ListFoodPageState extends State<ListFoodPage> {
                         value: DataRes(
                             id: listRes[index].id,
                             nameRes: listRes[index].name,
-                            imageRes: listRes[index].image),
+                            imageRes: listRes[index].image,
+                            local_map:listRes[index].localMap),
                       ),
                     ));
               } else {
@@ -165,7 +166,7 @@ class _ListFoodPageState extends State<ListFoodPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        ' ',
+                        '',
                         style: TextStyle(
                             fontFamily: FontStyles().fontFamily, fontSize: 18),
                       ),
@@ -176,7 +177,8 @@ class _ListFoodPageState extends State<ListFoodPage> {
                             ' น. ',
                         style: TextStyle(
                           fontFamily: FontStyles().fontFamily,
-                          fontSize: 16,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w300
                         ),
                       )
                     ],

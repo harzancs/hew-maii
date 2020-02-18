@@ -27,7 +27,7 @@ dependencies:
   shared_preferences: any
   # timeline_list: ^0.0.3
   # api google
-  # geolocator: ^5.1.3
+  map_launcher: any
   # api google
   barcode_scan: ^0.0.3
   flutter:

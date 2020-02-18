@@ -6,6 +6,7 @@ import 'package:hew_maii/model/link_image.dart';
 import 'package:hew_maii/page/food/food_main.dart';
 import 'package:hew_maii/page/food/model/list_food.dart';
 import 'package:hew_maii/page/food/order_food.dart';
+import 'package:hew_maii/page/map/map.dart';
 import 'package:hew_maii/server/server.dart';
 
 import 'package:http/http.dart' as http;
@@ -51,7 +52,8 @@ class _ListMenuFoodState extends State<ListMenuFood> {
     Map map = {
       "IDRESTAURENT": widget.value.id,
       "NAMERESTAURENT": widget.value.nameRes,
-      "IMAGERESTAURENT": widget.value.imageRes
+      "IMAGERESTAURENT": widget.value.imageRes,
+      "MAPRESTAURENT": widget.value.local_map
     };
     print(map);
     super.initState();
@@ -78,6 +80,14 @@ class _ListMenuFoodState extends State<ListMenuFood> {
               fontFamily: FontStyles().fontFamily,
               color: Color(0xFFFFF6F18)),
         ),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              openMapsSheet(context,widget.value.local_map,widget.value.nameRes);
+            },
+            icon: Icon(Icons.location_on, color: Color(0xFFFFF6F18)),
+          )
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(

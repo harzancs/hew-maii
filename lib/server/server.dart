@@ -13,6 +13,8 @@ class Server {
       "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiGetLocationMain.php";
   String updateLocation =
       "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiUpdateLocation.php";
+  String selectLocationPlace =
+      "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiGetLocationPlace.php";
 
   //----- Driver
   String driverGetOrder =
