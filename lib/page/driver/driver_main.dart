@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hew_maii/model/font_style.dart';
+import 'package:hew_maii/page/driver/driver_order.dart';
 import 'package:hew_maii/page/driver/model/list_order_driver.dart';
 import 'package:hew_maii/server/server.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ListDriverPage extends StatefulWidget {
   @override
@@ -24,8 +27,112 @@ class _ListDriverPageState extends State<ListDriverPage> {
 // in Card
   TextStyle textStyleOnTitle = TextStyle(
       fontFamily: FontStyles().fontFamily, fontSize: 30, color: Colors.grey);
-      TextStyle textStyleOnUnderTitle = TextStyle(
+  TextStyle textStyleOnUnderTitle = TextStyle(
       fontFamily: FontStyles().fontFamily, fontSize: 16, color: Colors.black);
+//-------------------------
+  String cus_id = '', idLocation = '';
+
+  bool _hide1 = false;
+  bool _hide2 = false;
+  bool _hide3 = false;
+//-------------------------
+  @override
+  void initState() {
+    _getDataLocal();
+    super.initState();
+  }
+
+//-------------------------
+  _getDataLocal() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      cus_id = prefs.getString('myUsername');
+      idLocation = prefs.getString('myLocal_id');
+      getStatusDrriver();
+    });
+  }
+
+  //*************** Server
+  Future<List> getStatusDrriver() async {
+    // print(response.body);
+    final response =
+        await http.post(Server().driverStatus, body: {"cusId": cus_id});
+    var datauser = json.decode(response.body);
+    print("GET STATUS => " + response.body);
+    String txtstatus = "9";
+    setState(() {
+      txtstatus = "${datauser[0]['status']}";
+    });
+    if (txtstatus == 'false') {
+      setState(() {
+        _hide1 = false;
+      });
+    } else {
+      String status_driver = "${datauser[0]['driver_status']}";
+      _hide1 = true;
+      if (status_driver == "0") {
+        print(status_driver);
+        setState(() {
+          _switchOn = false;
+        });
+      } else if (status_driver == "1") {
+        print(status_driver);
+        setState(() {
+          _switchOn = true;
+        });
+      } else if (status_driver == "2") {
+        print(status_driver);
+      }
+      _widgetOnOn();
+    }
+    return datauser;
+  }
+
+  Future<List> getStatusNew() async {
+    var numStatus;
+
+    if (_switchOn) {
+      setState(() {
+        numStatus = 1;
+      });
+    } else if (!_switchOn) {
+      setState(() {
+        numStatus = 0;
+      });
+    }
+
+    final response = await http.post(Server().driverUpdateStatus,
+        body: {"cusId": cus_id, "numStatus": numStatus.toString()});
+    var datauser = json.decode(response.body);
+    print("GET STATUS => " + response.body);
+    String txtstatus;
+    setState(() {
+      txtstatus = "${datauser[0]['status']}";
+    });
+    return datauser;
+  }
+
+  Future<List> getOrder() async {
+    // print(response.body);
+    final response = await http.post(Server().driverGetOrder,
+        body: {"username": cus_id, "location": idLocation});
+    var datauser = json.decode(response.body);
+    print(response.body);
+    var status = "${datauser[0]['status']}";
+    if (status != 'false') {
+      print("driver on");
+      setState(() {
+        print(response.body);
+        Iterable list_driver = json.decode(response.body);
+        listDriver =
+            list_driver.map((model) => ListDriver.fromJson(model)).toList();
+      });
+    } else {
+      print("driver no");
+    }
+    return datauser;
+  }
+  //*************** Server
 
   Widget _widgetStatus(bool _switchOn) {
     if (_switchOn) {
@@ -35,7 +142,7 @@ class _ListDriverPageState extends State<ListDriverPage> {
     }
   }
 
-  Widget _widgetOnOff() {
+  Widget _widgetNoDriver() {
     return Container(
         height: MediaQuery.of(context).size.height * 0.8,
         child: Center(
@@ -45,12 +152,12 @@ class _ListDriverPageState extends State<ListDriverPage> {
                 padding: EdgeInsets.all(50),
               ),
               Icon(
-                Icons.layers_clear,
+                Icons.motorcycle,
                 color: Colors.white,
                 size: 80,
               ),
               Text(
-                "ปิดรับงาน",
+                "สมัครขับส่งอาหาร",
                 style: textStyleOnOff,
               )
             ],
@@ -59,69 +166,81 @@ class _ListDriverPageState extends State<ListDriverPage> {
   }
 
   Widget _widgetOnOn() {
-    getOrder();
-    return Container(
-        height: MediaQuery.of(context).size.height * 0.8,
-        width: MediaQuery.of(context).size.width * 0.9,
-        child: ListView.builder(
-          itemCount: listDriver.length,
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemBuilder: (content, index) {
-            return Container(
-              height: 100,
-              child: Card(
-                  child: InkWell(
-                onTap: () {},
-                child: Container(
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            " OD" + listDriver[index].order_id.toString(),
-                            style: textStyleOnTitle,
-                          ),
-                          Text(
-                            listDriver[index].order_price.toString() + "฿ ",
-                            style: textStyleOnTitle,
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Text(
-                            "  " + listDriver[index].res_name,
-                            style: textStyleOnUnderTitle,
-                          )
-                        ],
-                      )
-                    ],
+    if (_switchOn) {
+      getOrder();
+      return Container(
+          height: MediaQuery.of(context).size.height * 0.8,
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: ListView.builder(
+            itemCount: listDriver.length,
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemBuilder: (content, index) {
+              return Container(
+                child: Card(
+                    child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DriverOrder()),
+                    );
+                  },
+                  child: Container(
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              " OD" + listDriver[index].order_id.toString(),
+                              style: textStyleOnTitle,
+                            ),
+                            Text(
+                              listDriver[index].order_price.toString() + "฿ ",
+                              style: textStyleOnTitle,
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              "  " + listDriver[index].res_name,
+                              style: textStyleOnUnderTitle,
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(3),
+                        )
+                      ],
+                    ),
                   ),
+                )),
+              );
+            },
+          ));
+    } else {
+      return Container(
+          height: MediaQuery.of(context).size.height * 0.8,
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(50),
                 ),
-              )),
-            );
-          },
-        ));
-  }
-
-  Future<List> getOrder() async {
-    // print(response.body);
-    final response =
-        await http.post(Server().driverGetOrder, body: {"username": 'harzan'});
-    var datauser = json.decode(response.body);
-    print(response.body);
-    var status = "${datauser[0]['status']}";
-    if (status != 'false') {
-      setState(() {
-        print(response.body);
-        Iterable list_driver = json.decode(response.body);
-        listDriver =
-            list_driver.map((model) => ListDriver.fromJson(model)).toList();
-      });
-    } else {}
-    return datauser;
+                Icon(
+                  Icons.layers_clear,
+                  color: Colors.white,
+                  size: 80,
+                ),
+                Text(
+                  "ปิดรับงาน",
+                  style: textStyleOnOff,
+                )
+              ],
+            ),
+          ));
+    }
   }
 
   @override
@@ -158,44 +277,47 @@ class _ListDriverPageState extends State<ListDriverPage> {
                         ),
                       ],
                     ),
-                    Row(
-                      children: <Widget>[
-                        Container(
-                          width: 115,
-                          height: 35,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15.0),
-                              color: Colors.white.withOpacity(0.2)),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              _widgetStatus(_switchOn),
-                              Switch(
-                                value: _switchOn,
-                                onChanged: (bool val) {
-                                  setState(() {
-                                    _switchOn = val;
-                                    print(_switchOn);
-                                  });
-                                },
-                                activeTrackColor: Colors.green,
-                                activeColor: Colors.white,
-                              )
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(5),
-                        )
-                      ],
-                    )
+                    Visibility(
+                        visible: _hide1,
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              width: 115,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  color: Colors.white.withOpacity(0.2)),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  _widgetStatus(_switchOn),
+                                  Switch(
+                                    value: _switchOn,
+                                    onChanged: (bool val) {
+                                      setState(() {
+                                        _switchOn = val;
+                                        print(_switchOn);
+                                        getStatusNew();
+                                      });
+                                    },
+                                    activeTrackColor: Colors.green,
+                                    activeColor: Colors.white,
+                                  )
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(5),
+                            )
+                          ],
+                        ))
                   ],
                 ),
               ),
               SingleChildScrollView(
                 child: Center(
-                  child: _switchOn ? _widgetOnOn() : _widgetOnOff(),
+                  child: _hide1 ? _widgetOnOn() : _widgetNoDriver(),
                 ),
               )
               // Container(
