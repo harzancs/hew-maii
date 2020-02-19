@@ -248,8 +248,8 @@ class _SignUpAddressState extends State<SignUpAddress> {
 
   _getUsername() async {
     final prefs = await SharedPreferences.getInstance();
-    var user = prefs.get('myUsername');
-    var pass = prefs.get('myPassword');
+    var user = prefs.getString('myUsername');
+    var pass = prefs.getString('myPassword');
     updateLocation(user, pass);
   }
 }

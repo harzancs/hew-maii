@@ -299,7 +299,7 @@ class _OrderFoodState extends State<OrderFood> {
                                                     overflow: TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                         color: Colors.black,
-                                                        fontSize: 16,
+                                                        fontSize: 15,
                                                         fontFamily: FontStyles()
                                                             .fontFamily)),
                                                 value:

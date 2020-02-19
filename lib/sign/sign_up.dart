@@ -79,8 +79,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                     Container(
-                      padding:
-                          EdgeInsets.only(top: 180.0, left: 20.0, right: 20.0),
+                      padding: EdgeInsets.only(top: 180.0, left: 20.0, right: 20.0),
                       child: SingleChildScrollView(
                         child: Form(
                           key: _formKey,

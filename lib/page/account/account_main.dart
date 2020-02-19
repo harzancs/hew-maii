@@ -158,12 +158,24 @@ class _ListAccountPageState extends State<ListAccountPage> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text(
-                                      'คุณ ' + logName + ' ' + logLastname,
-                                      style: TextStyle(
-                                          fontFamily: FontStyles().fontFamily,
-                                          fontSize: 18),
-                                    ),
+                                    SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.5,
+                                            child: Text(
+                                              'คุณ ' +
+                                                  logName +
+                                                  ' ' +
+                                                  logLastname,
+                                              overflow: TextOverflow.fade,
+                                              style: TextStyle(
+                                                  fontFamily:
+                                                      FontStyles().fontFamily,
+                                                  fontSize: 18),
+                                            ))),
                                     Text(
                                       "ID : " + logUser,
                                       style: TextStyle(
@@ -198,11 +210,21 @@ class _ListAccountPageState extends State<ListAccountPage> {
                                     Padding(
                                       padding: EdgeInsets.all(15),
                                     ),
-                                    Text('E-Mail : ' + logEmail,
-                                        style: TextStyle(
-                                          fontFamily: FontStyles().fontFamily,
-                                          fontSize: 16,
-                                        ))
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.78,
+                                        child: Text(
+                                          'E-Mail : ' + logEmail,
+                                          style: TextStyle(
+                                            fontFamily: FontStyles().fontFamily,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
+                                    )
                                   ],
                                 ),
                                 Row(
@@ -258,7 +280,7 @@ class _ListAccountPageState extends State<ListAccountPage> {
                                 width: MediaQuery.of(context).size.width * 0.9,
                                 height: 50,
                                 child: Center(
-                                  child: Text("แก้ไขที่อยู่ในการจัดส่ง",
+                                  child: Text("แก้ไขโซนที่อยู่",
                                       style: TextStyle(
                                         fontFamily: FontStyles().fontFamily,
                                         fontSize: 18,

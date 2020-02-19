@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hew_maii/model/font_style.dart';
-import 'package:hew_maii/page/account/edit_password.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class EditPerson extends StatefulWidget {
+class EditPassword extends StatefulWidget {
   @override
-  _EditPersonState createState() => _EditPersonState();
+  _EditPasswordState createState() => _EditPasswordState();
 }
 
-class _EditPersonState extends State<EditPerson> {
-  TextEditingController controlName = new TextEditingController();
-  TextEditingController controlLastname = new TextEditingController();
-  TextEditingController controlPhone = new TextEditingController();
-  TextEditingController controlEmail = new TextEditingController();
+class _EditPasswordState extends State<EditPassword> {
+  TextEditingController controlPass = new TextEditingController();
+  TextEditingController controlNewPass = new TextEditingController();
+  TextEditingController controlNewPassRe = new TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -23,19 +21,13 @@ class _EditPersonState extends State<EditPerson> {
     fontSize: 18,
   );
 
-  var name = '', lastname = '', phone = '', email = '';
+  var password = '', username = '', _newPass = '';
   //----------------------------------------------------
   Future<String> _getLocalData() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      name = prefs.getString("myName");
-      controlName.text = name;
-      lastname = prefs.getString("myLastname");
-      controlLastname.text = lastname;
-      phone = prefs.getString("myPhone");
-      controlPhone.text = phone;
-      email = prefs.getString("myEmail");
-      controlEmail.text = email;
+      password = prefs.getString("myPassword");
+      username = prefs.getString("myUsername");
     });
   }
 
@@ -54,7 +46,7 @@ class _EditPersonState extends State<EditPerson> {
         iconTheme: IconThemeData(color: Color(0xFFFFF6F18)),
         backgroundColor: Colors.white,
         title: Text(
-          "แก้ไขข้อมูลส่วนตัว",
+          "แก้ไขรหัสผ่าน",
           style: TextStyle(
               fontSize: 24,
               fontFamily: FontStyles().fontFamily,
@@ -105,16 +97,21 @@ class _EditPersonState extends State<EditPerson> {
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Text(
-                                          "ชื่อ",
+                                          "รหัสผ่านเดิม",
                                           style: _txtstyles,
                                         ),
                                         SizedBox(
                                           child: TextFormField(
-                                            controller: controlName,
+                                            controller: controlPass,
                                             autofocus: false,
+                                            obscureText: true,
                                             validator: (val) {
                                               if (val.isEmpty) {
                                                 return 'กรุณาป้อนข้อมูล';
+                                              } else if (val.isNotEmpty) {
+                                                if (val != password) {
+                                                  return 'รหัสผ่าน ไม่ถูกต้อง';
+                                                }
                                               }
                                               return null;
                                             },
@@ -127,7 +124,7 @@ class _EditPersonState extends State<EditPerson> {
                                               filled: true,
                                               fillColor: Color(0xFFFF6F18)
                                                   .withOpacity(0.4),
-                                              hintText: 'ชื่อ',
+                                              hintText: 'รหัสผ่าน เดิม',
                                               hintStyle: TextStyle(
                                                   color: Colors.white,
                                                   fontFamily:
@@ -135,17 +132,23 @@ class _EditPersonState extends State<EditPerson> {
                                             ),
                                           ),
                                         ),
+                                        Padding(padding: EdgeInsets.all(10)),
                                         Text(
-                                          "นามสกุล",
+                                          "รหัสผ่านใหม่",
                                           style: _txtstyles,
                                         ),
                                         SizedBox(
                                           child: TextFormField(
-                                            controller: controlLastname,
+                                            controller: controlNewPass,
                                             autofocus: false,
+                                            obscureText: true,
                                             validator: (val) {
                                               if (val.isEmpty) {
                                                 return 'กรุณาป้อนข้อมูล';
+                                              } else if (val.isNotEmpty) {
+                                                setState(() {
+                                                  _newPass = val;
+                                                });
                                               }
                                               return null;
                                             },
@@ -158,7 +161,7 @@ class _EditPersonState extends State<EditPerson> {
                                               filled: true,
                                               fillColor: Color(0xFFFF6F18)
                                                   .withOpacity(0.4),
-                                              hintText: 'นามสกุล',
+                                              hintText: 'รหัสผ่าน ใหม่',
                                               hintStyle: TextStyle(
                                                   color: Colors.white,
                                                   fontFamily:
@@ -166,56 +169,28 @@ class _EditPersonState extends State<EditPerson> {
                                             ),
                                           ),
                                         ),
+                                        Padding(padding: EdgeInsets.all(3)),
                                         Text(
-                                          "เบอร์โทรศัพท์",
+                                          "รหัสผ่านใหม่ อีกครั้ง",
                                           style: _txtstyles,
                                         ),
                                         SizedBox(
                                             child: TextFormField(
-                                                controller: controlPhone,
-                                                maxLength: 10,
+                                                controller: controlNewPassRe,
                                                 autofocus: false,
+                                                obscureText: true,
                                                 keyboardType:
-                                                    TextInputType.number,
-                                                validator: (val) {
-                                                  if (val.length != 10) {
-                                                    return 'กรุณาป้อนให้ครบ 10 หลัก';
-                                                  }
-                                                  return null;
-                                                },
-                                                style: TextStyle(
-                                                    fontSize: 16.0,
-                                                    fontFamily:
-                                                        FontStyles().fontFamily,
-                                                    color: Colors.black),
-                                                decoration: InputDecoration(
-                                                    filled: true,
-                                                    fillColor: Color(0xFFFF6F18)
-                                                        .withOpacity(0.4),
-                                                    hintText: 'เบอร์โทรศัพท์',
-                                                    hintStyle: TextStyle(
-                                                        color: Colors.white,
-                                                        fontFamily: FontStyles()
-                                                            .fontFamily)))),
-                                        Text(
-                                          "Email",
-                                          style: _txtstyles,
-                                        ),
-                                        SizedBox(
-                                            child: TextFormField(
-                                                controller: controlEmail,
-                                                autofocus: false,
+                                                    TextInputType.text,
                                                 validator: (val) {
                                                   if (val.isEmpty) {
                                                     return 'กรุณาป้อนข้อมูล';
-                                                  } else if (!val
-                                                      .contains('@')) {
-                                                    return 'กรุณาป้อน @ ด้วย';
+                                                  } else if (val.isNotEmpty) {
+                                                    if (val != _newPass) {
+                                                      return 'รหัสผ่านใหม่ไม่ตรงกัน';
+                                                    }
                                                   }
                                                   return null;
                                                 },
-                                                keyboardType:
-                                                    TextInputType.emailAddress,
                                                 style: TextStyle(
                                                     fontSize: 16.0,
                                                     fontFamily:
@@ -225,7 +200,8 @@ class _EditPersonState extends State<EditPerson> {
                                                     filled: true,
                                                     fillColor: Color(0xFFFF6F18)
                                                         .withOpacity(0.4),
-                                                    hintText: 'email',
+                                                    hintText:
+                                                        'รหัสผ่าน ใหม่ อีกครั้ง',
                                                     hintStyle: TextStyle(
                                                         color: Colors.white,
                                                         fontFamily: FontStyles()
@@ -242,28 +218,6 @@ class _EditPersonState extends State<EditPerson> {
                         Padding(
                           padding: EdgeInsets.all(10),
                         ),
-                        Card(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => EditPassword(),
-                                  ));
-                            },
-                            child: Container(
-                              color: Colors.white,
-                              width: MediaQuery.of(context).size.width * 0.9,
-                              height: 40,
-                              child: Center(
-                                child: Text(
-                                  "แก้ไขรหัสผ่าน",
-                                  style: _txtstylesBT,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
                       ],
                     )),
                   )
