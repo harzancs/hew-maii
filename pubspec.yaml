@@ -30,6 +30,7 @@ dependencies:
   map_launcher: any
   # api google
   barcode_scan: ^0.0.3
+  url_launcher: any
   flutter:
     sdk: flutter
 

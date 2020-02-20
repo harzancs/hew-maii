@@ -166,7 +166,7 @@ class _ListAccountPageState extends State<ListAccountPage> {
                                                     .width *
                                                 0.5,
                                             child: Text(
-                                              'คุณ ' +
+                                              '' +
                                                   logName +
                                                   ' ' +
                                                   logLastname,

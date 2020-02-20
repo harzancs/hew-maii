@@ -1,7 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hew_maii/model/font_style.dart';
 import 'package:hew_maii/page/account/edit_password.dart';
+import 'package:hew_maii/server/server.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:http/http.dart' as http;
 
 class EditPerson extends StatefulWidget {
   @override
@@ -23,11 +29,12 @@ class _EditPersonState extends State<EditPerson> {
     fontSize: 18,
   );
 
-  var name = '', lastname = '', phone = '', email = '';
+  var name = '', lastname = '', phone = '', email = '', cus_id = '';
   //----------------------------------------------------
   Future<String> _getLocalData() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
+      cus_id = prefs.getString("myUsername");
       name = prefs.getString("myName");
       controlName.text = name;
       lastname = prefs.getString("myLastname");
@@ -39,6 +46,46 @@ class _EditPersonState extends State<EditPerson> {
     });
   }
 
+  //----------------------------------------------------
+  Future<List> updateLocation() async {
+    // print(response.body);
+    final response = await http.post(Server().updatePerson, body: {
+      "cus_id": cus_id,
+      "name": controlName.text,
+      "lastname": controlLastname.text,
+      "email": controlEmail.text,
+      "phone": controlPhone.text
+    });
+    var datauser = json.decode(response.body);
+    print(response.body);
+    var status = "${datauser[0]['status']}";
+    if (status == 'false') {
+      setState(() {
+        Fluttertoast.showToast(
+          msg: "พบปัญหา โปรติดต่อทางเพจ !!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.white,
+          textColor: Colors.orange,
+          fontSize: 16.0,
+        );
+      });
+    } else if (status != 'false') {
+      _pushLocal();
+      Navigator.pop(context);
+      setState(() {
+        Fluttertoast.showToast(
+          msg: "แก้ไข เรียบร้อย",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.white,
+          textColor: Colors.orange,
+          fontSize: 16.0,
+        );
+      });
+    }
+    return datauser;
+  }
   //----------------------------------------------------
 
   @override
@@ -63,7 +110,9 @@ class _EditPersonState extends State<EditPerson> {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              if (_formKey.currentState.validate()) {}
+              if (_formKey.currentState.validate()) {
+                updateLocation();
+              }
             },
             icon: Icon(
               Icons.save,
@@ -272,5 +321,13 @@ class _EditPersonState extends State<EditPerson> {
             ),
           )),
     );
+  }
+  _pushLocal() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("myName",controlName.text);
+      prefs.setString("myLastname",controlLastname.text);
+      prefs.setString("myPhone",controlPhone.text);
+      prefs.setString("myEmail",controlEmail.text);
+    
   }
 }

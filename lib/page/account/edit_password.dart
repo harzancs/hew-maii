@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hew_maii/model/font_style.dart';
+import 'package:hew_maii/server/server.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:http/http.dart' as http;
 
 class EditPassword extends StatefulWidget {
   @override
@@ -32,6 +38,43 @@ class _EditPasswordState extends State<EditPassword> {
   }
 
   //----------------------------------------------------
+  Future<List> updateLocation() async {
+    // print(response.body);
+    final response = await http.post(Server().updatePassword, body: {
+      "cus_id": username,
+      "password": controlNewPassRe.text,
+    });
+    var datauser = json.decode(response.body);
+    print(response.body);
+    var status = "${datauser[0]['status']}";
+    if (status == 'false') {
+      setState(() {
+        Fluttertoast.showToast(
+          msg: "พบปัญหา โปรติดต่อทางเพจ !!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.white,
+          textColor: Colors.orange,
+          fontSize: 16.0,
+        );
+      });
+    } else if (status != 'false') {
+      _pushLocal();
+      Navigator.pop(context);
+      setState(() {
+        Fluttertoast.showToast(
+          msg: "แก้ไข เรียบร้อย",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.white,
+          textColor: Colors.orange,
+          fontSize: 16.0,
+        );
+      });
+    }
+    return datauser;
+  }
+  //-**---------------------------------------------------
 
   @override
   void initState() {
@@ -55,7 +98,9 @@ class _EditPasswordState extends State<EditPassword> {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              if (_formKey.currentState.validate()) {}
+              if (_formKey.currentState.validate()) {
+                updateLocation();
+              }
             },
             icon: Icon(
               Icons.save,
@@ -226,5 +271,10 @@ class _EditPasswordState extends State<EditPassword> {
             ),
           )),
     );
+  }
+
+  _pushLocal() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("myPassword", controlNewPassRe.text);
   }
 }

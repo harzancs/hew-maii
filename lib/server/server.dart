@@ -15,6 +15,10 @@ class Server {
       "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiUpdateLocation.php";
   String selectLocationPlace =
       "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiGetLocationPlace.php";
+  String updatePerson =
+      "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiUpdatePerson.php";
+  String updatePassword =
+      "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiUpdatePassword.php";
 
   //----- Driver
   String driverGetOrder =
@@ -25,6 +29,8 @@ class Server {
       "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiGetDriverStatus.php";
   String driverUpdateStatus =
       "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiUpdateDriverStatus.php";
+  String getDetailOrderDriver =
+      "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiGetDetailOrderDriver.php";
 
   //----- TimeLine
   String timeLineOrderDeatil =
