@@ -1,21 +1,26 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hew_maii/model/font_style.dart';
+import 'package:hew_maii/page/driver/driver_timeline.dart';
 import 'package:hew_maii/page/map/map.dart';
 import 'package:hew_maii/server/server.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class DriverOrder extends StatefulWidget {
   final String orId;
-  DriverOrder({Key key, this.orId}) : super(key: key);
+  final String stt;
+  DriverOrder({Key key, this.orId, this.stt}) : super(key: key);
   @override
   _DriverOrderState createState() => _DriverOrderState();
 }
 
 class _DriverOrderState extends State<DriverOrder> {
   //****************** */
+  bool status_popen = false;
   final TextStyle textHand =
       new TextStyle(fontFamily: FontStyles().fontFamily, fontSize: 24);
   final TextStyle textTitle =
@@ -28,8 +33,8 @@ class _DriverOrderState extends State<DriverOrder> {
 
   //----------------------------------------------------------
   var res_name = '', res_phone = '', res_local = '';
-  var cus_phone = '',order_point = '';
-  var place_name = '',place_lt = '';
+  var cus_phone = '', order_point = '';
+  var place_name = '', place_lt = '';
   Future<List> getOrder() async {
     // print(response.body);
     final response = await http
@@ -52,10 +57,143 @@ class _DriverOrderState extends State<DriverOrder> {
   }
 
   //----------------------------------------------------------
+  String cus_id = '';
+  _getDataLocal() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      cus_id = prefs.getString('myUsername');
+    });
+  }
+
+  //----------------------------------------------------------
+  void _showDialogAccept() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Row(children: <Widget>[
+            Icon(
+              Icons.done,
+              color: Colors.green,
+            ),
+            Text(
+              "รับออเดอร์นี้เรียบร้อยแล้ว",
+              style: TextStyle(fontFamily: FontStyles().fontFamily),
+            )
+          ]),
+          content: new Text(
+            "อ่านรายเอียดการรับและจัดส่งให้เรียบร้อย",
+            style: TextStyle(fontFamily: FontStyles().fontFamily),
+          ),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text(
+                "ปิด",
+                style: TextStyle(fontFamily: FontStyles().fontFamily),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DriverTimeline(
+                            orId: widget.orId,number: "0",
+                          )),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDialogDis() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Row(children: <Widget>[
+            Icon(
+              Icons.close,
+              color: Colors.red,
+            ),
+            Text(
+              " มีผู้อื่นรับออเดอร์นี้ก่อนแล้ว",
+              style: TextStyle(fontFamily: FontStyles().fontFamily),
+            )
+          ]),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text(
+                "ปิด",
+                style: TextStyle(fontFamily: FontStyles().fontFamily),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  //----------------------------------------------------------
+
+  //******************* */
+  Future<List> getStatusDrriver() async {
+    // print(response.body);
+    final response = await http.post(Server().updateAcceptOrder,
+        body: {"cusId": cus_id, "orderId": widget.orId});
+    var datauser = json.decode(response.body);
+    print("GET STATUS => " + response.body);
+    String txtstatus;
+    setState(() {
+      txtstatus = "${datauser[0]['status']}";
+    });
+
+    if (txtstatus == 'false1') {
+      _showDialogDis();
+    } else if (txtstatus == 'false0') {
+      setState(() {
+        Fluttertoast.showToast(
+          msg: "เจอปัญหา !!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.white,
+          textColor: Colors.orange,
+          fontSize: 16.0,
+        );
+      });
+    } else if (txtstatus == 'true') {
+      _showDialogAccept();
+    } else {
+      setState(() {
+        Fluttertoast.showToast(
+          msg: "เจอปัญหา !!" + txtstatus,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.white,
+          textColor: Colors.orange,
+          fontSize: 16.0,
+        );
+      });
+    }
+    return datauser;
+  }
+
+  //******************* */
 
   @override
   void initState() {
     getOrder();
+    _getDataLocal();
     super.initState();
   }
 
@@ -119,7 +257,8 @@ class _DriverOrderState extends State<DriverOrder> {
                                     icon: Icon(Icons.call,
                                         color: Color(0xFFFFF6F18)),
                                     onPressed: () {
-                                      UrlLauncher.launch('tel:'+cus_phone);
+                                      UrlLauncher.launch(
+                                          'tel:+66' + cus_phone.substring(1));
                                     })
                               ]),
                               Row(children: <Widget>[
@@ -139,7 +278,8 @@ class _DriverOrderState extends State<DriverOrder> {
                                     icon: Icon(Icons.pin_drop,
                                         color: Color(0xFFFFF6F18)),
                                     onPressed: () {
-                                      openMapsSheet(context,place_lt,place_name);
+                                      openMapsSheet(
+                                          context, place_lt, place_name);
                                     })
                               ]),
                               Row(
@@ -196,15 +336,16 @@ class _DriverOrderState extends State<DriverOrder> {
                                         icon: Icon(Icons.call,
                                             color: Color(0xFFFFF6F18)),
                                         onPressed: () {
-                                          UrlLauncher.launch(
-                                              'tel:' + res_phone);
+                                          UrlLauncher.launch('tel:+66' +
+                                              res_phone.substring(1));
                                         }),
                                     Padding(padding: EdgeInsets.all(20)),
                                     IconButton(
                                         icon: Icon(Icons.room,
                                             color: Color(0xFFFFF6F18)),
                                         onPressed: () {
-                                          openMapsSheet(context,res_local,res_name);
+                                          openMapsSheet(
+                                              context, res_local, res_name);
                                         }),
                                   ]),
                             ]),
@@ -214,26 +355,31 @@ class _DriverOrderState extends State<DriverOrder> {
                       ]),
                     ),
                   ),
-                  Card(
-                    color: Colors.green,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * .90,
-                        child: Column(children: <Widget>[
-                          Padding(padding: EdgeInsets.all(5)),
-                          Text(
-                            "รับออเดอร์นี้",
-                            style: TextStyle(
-                                fontFamily: FontStyles().fontFamily,
-                                fontSize: 20,
-                                color: Colors.white),
-                          ),
-                          Padding(padding: EdgeInsets.all(5)),
-                        ]),
+                  Visibility(
+                    visible: bool.fromEnvironment(widget.stt),
+                    child: Card(
+                      color: Colors.green,
+                      child: InkWell(
+                        onTap: () {
+                          getStatusDrriver();
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * .90,
+                          child: Column(children: <Widget>[
+                            Padding(padding: EdgeInsets.all(5)),
+                            Text(
+                              "รับออเดอร์นี้",
+                              style: TextStyle(
+                                  fontFamily: FontStyles().fontFamily,
+                                  fontSize: 20,
+                                  color: Colors.white),
+                            ),
+                            Padding(padding: EdgeInsets.all(5)),
+                          ]),
+                        ),
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),

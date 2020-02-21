@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  flutter_launcher_icons: ^0.7.3
   fluttertoast: ^3.1.3
   connectivity: ^0.4.5+3
   data_connection_checker: ^0.3.4
@@ -30,6 +31,7 @@ dependencies:
   map_launcher: any
   # api google
   barcode_scan: ^0.0.3
+  qr_flutter: ^3.0.1
   url_launcher: any
   flutter:
     sdk: flutter
@@ -40,14 +42,16 @@ dependencies:
 
 dev_dependencies:
   image_test_utils: ^1.0.0
-  flutter_launcher_icons: "^0.7.3"
   flutter_test:
     sdk: flutter
 
 flutter_icons:
-  android: "launcher_icon"
   ios: true
-  image_path: "assets/ic_launcher.png"
+  android: true
+  image_path_ios: "assets/launcher/icon.png"
+  image_path_android: "assets/launcher/icon.png"
+  adaptive_icon_background: "assets/launcher/background.png"
+  adaptive_icon_foreground: "assets/launcher/foreground.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

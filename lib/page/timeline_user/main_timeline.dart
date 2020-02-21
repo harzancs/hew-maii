@@ -350,71 +350,69 @@ class _MainTimeLineState extends State<MainTimeLine> {
                                                   style: textTitle,
                                                 ),
                                                 Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            .6,
-                                                    child:
-                                                        SingleChildScrollView(
-                                                            scrollDirection:
-                                                                Axis.horizontal,
-                                                            child: Column(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: <
-                                                                    Widget>[
-                                                                  Row(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .start,
-                                                                      children: <
-                                                                          Widget>[
-                                                                        Text(
-                                                                          "ชื่อ : ",
-                                                                          style:
-                                                                              textTitleDetail,
-                                                                        ),
-                                                                        Text(
-                                                                          "คุณ" +
-                                                                              name_driver +
-                                                                              " " +
-                                                                              lastnum_driver,
-                                                                          style:
-                                                                              textDetail,
-                                                                        )
-                                                                      ]),
-                                                                  Row(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .start,
-                                                                      children: <
-                                                                          Widget>[
-                                                                        Text(
-                                                                          "รถ : ",
-                                                                          style:
-                                                                              textTitleDetail,
-                                                                        ),
-                                                                        Text(
-                                                                          "" +
-                                                                              car_type +
-                                                                              " " +
-                                                                              car_num,
-                                                                          style:
-                                                                              textDetail,
-                                                                        )
-                                                                      ])
-                                                                ]))),
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      .6,
+                                                  child: SingleChildScrollView(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                        Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: <Widget>[
+                                                              Text(
+                                                                "ชื่อ : ",
+                                                                style:
+                                                                    textTitleDetail,
+                                                              ),
+                                                              Text(
+                                                                "คุณ" +
+                                                                    name_driver +
+                                                                    " " +
+                                                                    lastnum_driver,
+                                                                style:
+                                                                    textDetail,
+                                                              )
+                                                            ]),
+                                                        Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: <Widget>[
+                                                              Text(
+                                                                "รถ : ",
+                                                                style:
+                                                                    textTitleDetail,
+                                                              ),
+                                                              Text(
+                                                                "" +
+                                                                    car_type +
+                                                                    " " +
+                                                                    car_num,
+                                                                style:
+                                                                    textDetail,
+                                                              )
+                                                            ]),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
                                               ])
                                         ],
                                       ),

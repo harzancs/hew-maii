@@ -31,6 +31,10 @@ class Server {
       "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiUpdateDriverStatus.php";
   String getDetailOrderDriver =
       "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiGetDetailOrderDriver.php";
+  String updateAcceptOrder =
+      "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiSelectOrderDriver.php";
+  String getOrderDetailr =
+      "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiGetDriverOrderDetail.php";
 
   //----- TimeLine
   String timeLineOrderDeatil =
@@ -39,5 +43,19 @@ class Server {
       "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiGetMyOrder.php";
   String timeLineOrderStatus =
       "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiGetTimelineOrder.php";
+
+  //---------Button Timeline----------------
+  String btFinish =
+      "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/api_btDriverTimeline/finishApiTimeline.php";
+  String receiveFoodDriver =
+      "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/api_btDriverTimeline/receiveFoodApiTimeline.php";
+  String sendFoodDriver =
+      "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/api_btDriverTimeline/sendFoodApiTimeline.php";
+  String arriveFoodDriver =
+      "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/api_btDriverTimeline/arriveFoodApiTimeline.php";
+  String checkFinish =
+      "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/api_btDriverTimeline/checkStatusFinish.php";
+  
+  
   Server() : super();
 }

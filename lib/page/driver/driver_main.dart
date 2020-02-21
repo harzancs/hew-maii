@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hew_maii/model/font_style.dart';
 import 'package:hew_maii/page/driver/driver_order.dart';
+import 'package:hew_maii/page/driver/driver_timeline.dart';
 import 'package:hew_maii/page/driver/model/list_order_driver.dart';
 import 'package:hew_maii/server/server.dart';
 
@@ -53,35 +54,46 @@ class _ListDriverPageState extends State<ListDriverPage> {
   }
 
   //*************** Server
+  String orderId = '';
   Future<List> getStatusDrriver() async {
     // print(response.body);
     final response =
         await http.post(Server().driverStatus, body: {"cusId": cus_id});
     var datauser = json.decode(response.body);
     print("GET STATUS => " + response.body);
-    String txtstatus = "9";
+    String txtstatus;
     setState(() {
       txtstatus = "${datauser[0]['status']}";
     });
     if (txtstatus == 'false') {
       setState(() {
         _hide1 = false;
+        _hide2 = false;
       });
     } else {
       String status_driver = "${datauser[0]['driver_status']}";
       _hide1 = true;
+      _hide2 = true;
       if (status_driver == "0") {
         print(status_driver);
         setState(() {
+          _hide3 = false;
           _switchOn = false;
         });
       } else if (status_driver == "1") {
         print(status_driver);
         setState(() {
+          _hide3 = false;
           _switchOn = true;
         });
       } else if (status_driver == "2") {
         print(status_driver);
+        setState(() {
+          orderId = "${datauser[0]['order_id']}";
+          _switchOn = true;
+          _hide2 = false;
+          _hide3 = true;
+        });
       }
       _widgetOnOn();
     }
@@ -167,60 +179,113 @@ class _ListDriverPageState extends State<ListDriverPage> {
 
   Widget _widgetOnOn() {
     if (_switchOn) {
-      getOrder();
-      return Container(
-          height: MediaQuery.of(context).size.height * 0.8,
-          width: MediaQuery.of(context).size.width * 0.9,
-          child: ListView.builder(
-            itemCount: listDriver.length,
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemBuilder: (content, index) {
-              return Container(
-                child: Card(
-                    child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DriverOrder(
-                        orId:listDriver[index].order_id.toString(),
-                      )),
-                    );
-                  },
-                  child: Container(
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              " OD" + listDriver[index].order_id.toString(),
-                              style: textStyleOnTitle,
-                            ),
-                            Text(
-                              listDriver[index].order_price.toString() + "฿ ",
-                              style: textStyleOnTitle,
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              "  " + listDriver[index].res_name,
-                              style: textStyleOnUnderTitle,
-                            )
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(3),
-                        )
-                      ],
+      if (!_hide3) {
+        getOrder();
+        return Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: ListView.builder(
+              itemCount: listDriver.length,
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemBuilder: (content, index) {
+                return Container(
+                  child: Card(
+                      child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DriverOrder(
+                                  orId: listDriver[index].order_id.toString(),
+                                  stt: "false",
+                                )),
+                      );
+                    },
+                    child: Container(
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                " OD" + listDriver[index].order_id.toString(),
+                                style: textStyleOnTitle,
+                              ),
+                              Text(
+                                listDriver[index].order_price.toString() + "฿ ",
+                                style: textStyleOnTitle,
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "  " + listDriver[index].res_name,
+                                style: textStyleOnUnderTitle,
+                              )
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(3),
+                          )
+                        ],
+                      ),
                     ),
+                  )),
+                );
+              },
+            ));
+      } else {
+        return Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(50),
                   ),
-                )),
-              );
-            },
-          ));
+                  Icon(
+                    Icons.layers,
+                    color: Colors.white,
+                    size: 80,
+                  ),
+                  Text(
+                    "กำลังดำเนินการ",
+                    style: textStyleOnOff,
+                  ),
+                  Text(
+                    "OR" + orderId,
+                    style: textStyleOnOff,
+                  ),
+                  RaisedButton.icon(
+                      color: Colors.white,
+                      onPressed: () {
+                        var stt = "false";
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DriverTimeline(
+                                    orId: orderId,
+                                    number: "0",
+                                  )),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.format_list_numbered,
+                        color: Color(0xFFFFF6F18),
+                      ),
+                      label: Text(
+                        "ดูไทม์ไลน์",
+                        style: TextStyle(
+                            color: Color(0xFFFFF6F18),
+                            fontFamily: FontStyles().fontFamily,
+                            fontSize: 20),
+                      ))
+                ],
+              ),
+            ));
+      }
     } else {
       return Container(
           height: MediaQuery.of(context).size.height * 0.8,
@@ -280,7 +345,7 @@ class _ListDriverPageState extends State<ListDriverPage> {
                       ],
                     ),
                     Visibility(
-                        visible: _hide1,
+                        visible: _hide2,
                         child: Row(
                           children: <Widget>[
                             Container(
