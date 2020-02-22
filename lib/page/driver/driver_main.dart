@@ -6,6 +6,7 @@ import 'package:hew_maii/model/font_style.dart';
 import 'package:hew_maii/page/driver/driver_order.dart';
 import 'package:hew_maii/page/driver/driver_timeline.dart';
 import 'package:hew_maii/page/driver/model/list_order_driver.dart';
+import 'package:hew_maii/page/driver/registor/registor_main.dart';
 import 'package:hew_maii/server/server.dart';
 
 import 'package:http/http.dart' as http;
@@ -171,7 +172,48 @@ class _ListDriverPageState extends State<ListDriverPage> {
               Text(
                 "สมัครขับส่งอาหาร",
                 style: textStyleOnOff,
-              )
+              ),
+              Card(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RegistorDriver()),
+                    );
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * .3,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(5),
+                        ),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.person_add,
+                                color: Color(0xFFFFF6F18),
+                              ),
+                              Text(
+                                " ลงทะเบียน",
+                                style: TextStyle(
+                                    fontFamily: FontStyles().fontFamily,
+                                    fontSize: 16,
+                                    color: Color(0xFFFFF6F18)),
+                              )
+                            ]),
+                        Padding(
+                          padding: EdgeInsets.all(5),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ));
@@ -198,7 +240,7 @@ class _ListDriverPageState extends State<ListDriverPage> {
                         MaterialPageRoute(
                             builder: (context) => DriverOrder(
                                   orId: listDriver[index].order_id.toString(),
-                                  stt: "false",
+                                  stt: "true",
                                 )),
                       );
                     },
@@ -258,9 +300,9 @@ class _ListDriverPageState extends State<ListDriverPage> {
                     "OR" + orderId,
                     style: textStyleOnOff,
                   ),
-                  RaisedButton.icon(
-                      color: Colors.white,
-                      onPressed: () {
+                  Card(
+                    child: InkWell(
+                      onTap: () {
                         var stt = "false";
                         Navigator.push(
                           context,
@@ -271,17 +313,39 @@ class _ListDriverPageState extends State<ListDriverPage> {
                                   )),
                         );
                       },
-                      icon: Icon(
-                        Icons.format_list_numbered,
-                        color: Color(0xFFFFF6F18),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * .3,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.all(5),
+                            ),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.format_list_numbered,
+                                    color: Color(0xFFFFF6F18),
+                                  ),
+                                  Text(
+                                    " ดูไทม์ไลน์",
+                                    style: TextStyle(
+                                        fontFamily: FontStyles().fontFamily,
+                                        fontSize: 16,
+                                        color: Color(0xFFFFF6F18)),
+                                  )
+                                ]),
+                            Padding(
+                              padding: EdgeInsets.all(5),
+                            ),
+                          ],
+                        ),
                       ),
-                      label: Text(
-                        "ดูไทม์ไลน์",
-                        style: TextStyle(
-                            color: Color(0xFFFFF6F18),
-                            fontFamily: FontStyles().fontFamily,
-                            fontSize: 20),
-                      ))
+                    ),
+                  )
                 ],
               ),
             ));

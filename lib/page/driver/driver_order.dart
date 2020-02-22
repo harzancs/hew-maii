@@ -35,6 +35,9 @@ class _DriverOrderState extends State<DriverOrder> {
   var res_name = '', res_phone = '', res_local = '';
   var cus_phone = '', order_point = '';
   var place_name = '', place_lt = '';
+
+  bool _visibleHide = true;
+
   Future<List> getOrder() async {
     // print(response.body);
     final response = await http
@@ -63,6 +66,7 @@ class _DriverOrderState extends State<DriverOrder> {
     setState(() {
       cus_id = prefs.getString('myUsername');
     });
+    
   }
 
   //----------------------------------------------------------
@@ -99,7 +103,8 @@ class _DriverOrderState extends State<DriverOrder> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => DriverTimeline(
-                            orId: widget.orId,number: "0",
+                            orId: widget.orId,
+                            number: "0",
                           )),
                 );
               },
@@ -195,6 +200,16 @@ class _DriverOrderState extends State<DriverOrder> {
     getOrder();
     _getDataLocal();
     super.initState();
+
+    if (widget.stt == 'false') {
+      setState(() {
+        _visibleHide = false;
+      });
+    } else {
+      setState(() {
+        _visibleHide = true;
+      });
+    }
   }
 
   @override
@@ -356,7 +371,7 @@ class _DriverOrderState extends State<DriverOrder> {
                     ),
                   ),
                   Visibility(
-                    visible: bool.fromEnvironment(widget.stt),
+                    visible: _visibleHide,
                     child: Card(
                       color: Colors.green,
                       child: InkWell(

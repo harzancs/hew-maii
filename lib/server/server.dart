@@ -21,6 +21,8 @@ class Server {
       "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiUpdatePassword.php";
 
   //----- Driver
+  String driverRegistor =
+      "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiPushRegistorDriver.php";
   String driverGetOrder =
       "http://std.csit.sci.tsu.ac.th/592021212/Homework/hew-maii/apiGetOrderDriver.php";
   String receiveFood =
