@@ -129,7 +129,7 @@ class _WelcomeLoaderPageState extends State<WelcomeLoaderPage> {
         );
         _saveUser(widget.user);
         _savePass(widget.pass);
-        _saveLocal(textLocation, datauser[0]['location_iid'].toString());
+        _saveLocal(textLocation, datauser[0]['location_id'].toString());
         _saveName(datauser[0]['cus_name']);
         _saveLastname(datauser[0]['cus_lastname']);
         _savePhone(datauser[0]['cus_phone']);

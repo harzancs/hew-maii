@@ -32,7 +32,6 @@ class _SignUpAddressState extends State<SignUpAddress> {
   void initState() {
     this.getLocationData();
     super.initState();
-    _getUsername();
   }
 
   //**-****************************** */
@@ -250,6 +249,12 @@ class _SignUpAddressState extends State<SignUpAddress> {
     final prefs = await SharedPreferences.getInstance();
     var user = prefs.getString('myUsername');
     var pass = prefs.getString('myPassword');
+    prefs.setString('myLocal_id', _mySelection);
+    for (int i = 0; i < dataLocation.length; i++) {
+      if (_mySelection == dataLocation[i]['location_id']) {
+        prefs.setString('myLocal', dataLocation[i]['location_name']);
+      }
+    }
     updateLocation(user, pass);
   }
 }
