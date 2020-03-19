@@ -24,6 +24,8 @@ class _SignUpAddressState extends State<SignUpAddress> {
 
   bool _isLoading = true;
 
+  String nameLocation;
+
   String pass;
   List dataLocation = List(); //edited line
   String _mySelection;
@@ -72,7 +74,8 @@ class _SignUpAddressState extends State<SignUpAddress> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => WelcomeLoaderPage(user: user, pass: pass),
+          builder: (context) => WelcomeLoaderPage(
+              user: user, pass: pass, nameLocation: nameLocation),
         ),
       );
     }
@@ -253,6 +256,9 @@ class _SignUpAddressState extends State<SignUpAddress> {
     for (int i = 0; i < dataLocation.length; i++) {
       if (_mySelection == dataLocation[i]['location_id']) {
         prefs.setString('myLocal', dataLocation[i]['location_name']);
+        setState(() {
+          nameLocation = dataLocation[i]['location_name'];
+        });
       }
     }
     updateLocation(user, pass);

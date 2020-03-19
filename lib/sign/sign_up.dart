@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hew_maii/model/font_style.dart';
 import 'package:hew_maii/sign/sign_up_next.dart';
 
@@ -203,6 +204,9 @@ class _SignUpState extends State<SignUp> {
                                   controller: controlPhone,
                                   autofocus: false,
                                   maxLength: 10,
+                                  inputFormatters: [
+                                    WhitelistingTextInputFormatter.digitsOnly
+                                  ],
                                   maxLengthEnforced: true,
                                   validator: (val) {
                                     if (val.length != 10) {
@@ -210,7 +214,7 @@ class _SignUpState extends State<SignUp> {
                                     }
                                     return null;
                                   },
-                                  keyboardType: TextInputType.number,
+                                  keyboardType: TextInputType.phone,
                                   style: TextStyle(
                                       fontSize: 18.0,
                                       fontFamily: FontStyles().fontFamily,

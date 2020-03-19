@@ -14,7 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class WelcomeLoaderPage extends StatefulWidget {
   final String user;
   final String pass;
-  WelcomeLoaderPage({Key key, this.user, this.pass}) : super(key: key);
+  final String nameLocation;
+  WelcomeLoaderPage({Key key, this.user, this.pass,this.nameLocation}) : super(key: key);
   @override
   _WelcomeLoaderPageState createState() => _WelcomeLoaderPageState();
 }
@@ -129,7 +130,7 @@ class _WelcomeLoaderPageState extends State<WelcomeLoaderPage> {
         );
         _saveUser(widget.user);
         _savePass(widget.pass);
-        _saveLocal(textLocation, datauser[0]['location_id'].toString());
+        _saveLocal(widget.nameLocation, datauser[0]['location_iid']);
         _saveName(datauser[0]['cus_name']);
         _saveLastname(datauser[0]['cus_lastname']);
         _savePhone(datauser[0]['cus_phone']);
